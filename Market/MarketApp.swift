@@ -11,7 +11,7 @@ import SwiftUI
 struct MarketApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ListOverviewView(viewModel: .init())
         }
     }
 }
