@@ -9,34 +9,59 @@ import SwiftUI
 
 struct ListOverviewView: View {
     
-    @ObservedObject var viewModel: ListOverviewViewModel
+    @StateObject var viewModel: ListOverviewViewModel
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
-                List {
-                    Section(header: Text("First section")) {
-                        NavigationLink {
-                            ListDetailsView()
-                        } label: {
-                            Text("Press me")
-                        }
-                        Text("Item 2")
-                        Text("Item 3")
+                VStack(spacing: 20) {
+                    TextField("Add new item here...", text: $viewModel.newItemTitle)
+                        .padding(.horizontal)
+                        .frame(height: 60)
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(20)
+                        .padding(.horizontal)
+                    Button {
+                        viewModel.addNewItem()
+                    } label: {
+                        Text("Add new")
+                            .font(Font.custom(FontKeys.Quicksand.bold.rawValue, size: 14))
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color(ColorKeys.appAccentColor.rawValue))
+                            .cornerRadius(12)
                     }
-                    Section(header: Text("Second section")) {
-                        Text("Item 4")
-                        Text("Item 5")
-                        Text("Item 6")
+
+                    NavigationLink {
+                        TestView(viewModel: .init())
+                    } label: {
+                        Text("Go to test")
+                    }
+                    
+                    ScrollView {
+                        ForEach(viewModel.items, id: \.self) { item in
+                            HStack {
+                                Text(item.title ?? "n/a")
+                                    .padding(.vertical, 8)
+                                Button {
+                                    viewModel.deleteItem(item)
+                                } label: {
+                                    Text("Delete")
+                                        .foregroundColor(.red)
+                                }
+                            }
+                        }
                     }
                 }
             }
+            .navigationTitle("Groceries")
         }
         .onAppear {
-            Task {
-                await viewModel.fetchAllLists()
-            }
+            viewModel.subscribeToItemsProvider()
         }
+//        onDisappear {
+//            viewModel.cancelSubscriptions()
+//        }
     }
 }
 

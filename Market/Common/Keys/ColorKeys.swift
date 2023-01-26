@@ -11,5 +11,6 @@ enum ColorKeys: String {
     
     case appAccentColor = "AppAccentColor"
     case appTextColor = "AppTextColor"
+    case appAccentTextColor = "AppAccentTextColor"
     case appBackgroundColor = "AppBackgroundColor"
 }
