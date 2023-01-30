@@ -10,11 +10,17 @@ import CoreData
 
 struct ItemRow: View {
     
-    var item: ItemEntity
-    var toggleIsChecked: () -> Void
+    private var item: ItemEntity
+    private var toggleIsChecked: () -> Void
     
-    @State private var titleInputString = ""
+    @State private var titleInputString: String
     @FocusState private var focusedField: FocusField?
+    
+    init(item: ItemEntity, toggleIsChecked: @escaping () -> Void) {
+        self._titleInputString = State(initialValue: item.title ?? "")
+        self.item = item
+        self.toggleIsChecked = toggleIsChecked
+    }
     
     var body: some View {
         HStack(spacing: 20) {
@@ -24,16 +30,10 @@ struct ItemRow: View {
                 }
                 .imageScale(.large)
             HStack(spacing: 20) {
-                if item.title == nil {
-                    TextField("", text: $titleInputString)
-                        .focused($focusedField, equals: .titleField)
-                        .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 20))
-                        .foregroundColor(Color(ColorKeys.appTextColor.rawValue))
-                } else {
-                    Text(item.title ?? "")
-                        .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 20))
-                        .foregroundColor(Color(ColorKeys.appTextColor.rawValue))
-                }
+                TextField("", text: $titleInputString)
+                    .focused($focusedField, equals: .titleField)
+                    .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 20))
+                    .foregroundColor(Color(ColorKeys.appTextColor.rawValue))
                 if item.quantity > 0 {
                     Text(String(item.quantity))
                         .font(.custom(FontKeys.Quicksand.bold.rawValue, size: 18))
@@ -60,9 +60,12 @@ struct ItemRow: View {
                 }
             }
         }
-        .onAppear {
-            self.focusedField = .titleField
-        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 6)
+    }
+    
+    func setFocusStateOnTitleField() {
+        self.focusedField = .titleField
     }
 }
 
@@ -70,6 +73,10 @@ struct ItemRow_Previews: PreviewProvider {
     
     static var previews: some View {
         let item = ItemEntity.emptyExampleItem
-        ItemRow(item: item) { }
+        ScrollView {
+            ItemRow(item: item) { }
+            ItemRow(item: item) { }
+            ItemRow(item: item) { }
+        }
     }
 }

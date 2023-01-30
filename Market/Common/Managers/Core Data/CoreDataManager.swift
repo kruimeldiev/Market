@@ -17,8 +17,15 @@ class CoreDataManager: CoreDataManagerProtocol {
     private var persistentContainer: NSPersistentContainer
     private let managedObjectContext: NSManagedObjectContext
     
-    init() {
+    init(inMemory: Bool = false) {
         self.persistentContainer = NSPersistentContainer(name: "Market")
+        
+        if inMemory {
+            let description = NSPersistentStoreDescription()
+            description.type = NSInMemoryStoreType
+            persistentContainer.persistentStoreDescriptions = [description]
+        }
+        
         self.managedObjectContext = persistentContainer.viewContext
         
         persistentContainer.loadPersistentStores { description, error in

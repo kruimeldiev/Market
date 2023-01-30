@@ -25,8 +25,5 @@ struct TestView: View {
         .onAppear {
             viewModel.subscribeToItemsProvider()
         }
-        .onDisappear {
-            viewModel.cancelSubscriptions()
-        }
     }
 }

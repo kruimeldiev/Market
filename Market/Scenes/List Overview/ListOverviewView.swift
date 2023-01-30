@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 struct ListOverviewView: View {
     
@@ -40,15 +41,8 @@ struct ListOverviewView: View {
                     
                     ScrollView {
                         ForEach(viewModel.items, id: \.self) { item in
-                            HStack {
-                                Text(item.title ?? "n/a")
-                                    .padding(.vertical, 8)
-                                Button {
-                                    viewModel.deleteItem(item)
-                                } label: {
-                                    Text("Delete")
-                                        .foregroundColor(.red)
-                                }
+                            ItemRow(item: item) {
+                                viewModel.checkItemEntity(item)
                             }
                         }
                     }
@@ -59,14 +53,12 @@ struct ListOverviewView: View {
         .onAppear {
             viewModel.subscribeToItemsProvider()
         }
-//        onDisappear {
-//            viewModel.cancelSubscriptions()
-//        }
     }
 }
 
 struct ListOverviewView_Previews: PreviewProvider {
     static var previews: some View {
+        let _ = Container.setupPreviews()
         ListOverviewView(viewModel: .init())
     }
 }

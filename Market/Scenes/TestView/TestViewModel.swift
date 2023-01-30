@@ -16,24 +16,32 @@ class TestViewModel: ObservableObject {
     
     @Published var items = [ItemEntity]()
     
-    private weak var cancellable: AnyCancellable? = nil
-    
-    // TODO: Is deinit best way yo handle this?
-    deinit {
-        print("Deinit Test VM")
-    }
+    private var cancellable: AnyCancellable?
     
     func subscribeToItemsProvider() {
-        cancellable = itemsProvider.getPublisher().assign(to: \.items, on: self)
-        itemsProvider.fetchAllItems()
-    }
-    
-    func cancelSubscriptions() {
-        cancellable = nil
+        
+        cancellable = itemsProvider.itemsPublisher
+            .sink { [weak self] items in
+                self?.items = items
+            }
+        
+        let test = itemsProvider.readAndUpdatePublisher()
+        switch test {
+            case .success:
+                break
+            case .failure(let failure):
+                print(failure)
+        }
     }
     
     func deleteTopItem(index: Int) {
         guard let item = items.last else { return }
-        itemsProvider.deleteItemEntity(item)
+        let result = itemsProvider.deleteItemEntity(item)
+        switch result {
+            case .success:
+                print("Item Deleted")
+            case .failure(let error):
+                print(error)
+        }
     }
 }

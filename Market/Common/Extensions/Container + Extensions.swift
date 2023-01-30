@@ -10,6 +10,17 @@ import Factory
 
 extension Container {
     
+    // TODO: Setups are WIP
+    
+    static func setupMocks() {
+        coreDataManager.register { CoreDataManager(inMemory: true) }
+    }
+    
+    static func setupPreviews() {
+        coreDataManager.register { CoreDataManager(inMemory: true) }
+//        itemEntityProvider.register { }
+    }
+    
     static let coreDataManager = Factory(scope: .singleton) {
         CoreDataManager() as CoreDataManagerProtocol
     }

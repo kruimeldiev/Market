@@ -18,9 +18,13 @@ class ListOverviewViewModel: ObservableObject {
     @Published var newItemTitle = ""
     @Published var items = [ItemEntity]()
     
+    /// Subscribes to the ItemsProvider with a weak reference
     func subscribeToItemsProvider() {
-        cancellable = itemsProvider.getPublisher().assign(to: \.items, on: self)
-        let result = itemsProvider.fetchAllItems()
+        cancellable = itemsProvider.itemsPublisher
+            .sink { [weak self] items in
+                self?.items = items
+            }
+        let result = itemsProvider.readAndUpdatePublisher()
         switch result {
             case .success:
                 break
@@ -28,16 +32,11 @@ class ListOverviewViewModel: ObservableObject {
                 // TODO: Error handling
                 print(error)
         }
-    }
-    
-    // TODO: Dit werkt niet helemaal
-    func cancelSubscriptions() {
-        cancellable = nil
     }
     
     func addNewItem() {
         guard newItemTitle != "" else { return }
-        let result = itemsProvider.addNewItem(title: newItemTitle)
+        let result = itemsProvider.createItemEntity(title: newItemTitle)
         switch result {
             case .success:
                 break
@@ -47,11 +46,22 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    func deleteItem(_ item: ItemEntity) {
+    func deleteItemEntity(_ item: ItemEntity) {
         let result = itemsProvider.deleteItemEntity(item)
         switch result {
             case .success:
-                break
+                print("Item deleted")
+            case .failure(let error):
+                print(error)
+        }
+    }
+    
+    func checkItemEntity(_ item: ItemEntity) {
+        item.isChecked.toggle()
+        let result = itemsProvider.updateItemEntity()
+        switch result {
+            case .success:
+                print("Item updated")
             case .failure(let error):
                 print(error)
         }
