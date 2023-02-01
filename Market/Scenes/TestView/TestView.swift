@@ -22,8 +22,5 @@ struct TestView: View {
                 Text("Delete top item")
             }
         }
-        .onAppear {
-            viewModel.subscribeToItemsProvider()
-        }
     }
 }

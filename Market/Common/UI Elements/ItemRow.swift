@@ -29,23 +29,29 @@ struct ItemRow: View {
                     toggleIsChecked()
                 }
                 .imageScale(.large)
-            HStack(spacing: 20) {
-                TextField("", text: $titleInputString)
-                    .focused($focusedField, equals: .titleField)
-                    .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 20))
-                    .foregroundColor(Color(ColorKeys.appTextColor.rawValue))
-                if item.quantity > 0 {
-                    Text(String(item.quantity))
-                        .font(.custom(FontKeys.Quicksand.bold.rawValue, size: 18))
-                        .foregroundColor(Color(ColorKeys.appAccentTextColor.rawValue))
+            GeometryReader { geometry in
+                HStack(spacing: 20) {
+                    TextField("", text: $titleInputString)
+                        .focused($focusedField, equals: .titleField)
+                        .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 20))
+                        .foregroundColor(Color(ColorKeys.appTextColor.rawValue))
+                        .lineLimit(30)
+                        
+                    if item.quantity > 0 {
+                        Text(String(item.quantity))
+                            .font(.custom(FontKeys.Quicksand.bold.rawValue, size: 16))
+                            .foregroundColor(Color(ColorKeys.appAccentTextColor.rawValue))
+//                            .fixedSize()
+                    }
                 }
+                .frame(minWidth: 100, maxWidth: geometry.size.width)
+                .fixedSize(horizontal: true, vertical: false)
             }
-            Spacer()
             Group {
                 switch item.priority {
                     case 1:
                         Circle()
-                            .foregroundColor(.red)
+                            .foregroundColor(.green)
                             .frame(width: 14)
                     case 2:
                         Circle()
@@ -53,7 +59,7 @@ struct ItemRow: View {
                             .frame(width: 14)
                     case 3:
                         Circle()
-                            .foregroundColor(.green)
+                            .foregroundColor(.red)
                             .frame(width: 14)
                     default:
                         Text("")
@@ -72,11 +78,10 @@ struct ItemRow: View {
 struct ItemRow_Previews: PreviewProvider {
     
     static var previews: some View {
-        let item = ItemEntity.emptyExampleItem
         ScrollView {
-            ItemRow(item: item) { }
-            ItemRow(item: item) { }
-            ItemRow(item: item) { }
+            ItemRow(item: ItemEntity.shortExampleItem) { }
+            ItemRow(item: ItemEntity.mediumExampleItem) { }
+            ItemRow(item: ItemEntity.longExampleItem) { }
         }
     }
 }

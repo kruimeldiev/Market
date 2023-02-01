@@ -18,25 +18,29 @@ class ListOverviewViewModel: ObservableObject {
     @Published var newItemTitle = ""
     @Published var items = [ItemEntity]()
     
+    init() {
+        subscribeToItemsProvider()
+    }
+    
     /// Subscribes to the ItemsProvider with a weak reference
-    func subscribeToItemsProvider() {
+    private func subscribeToItemsProvider() {
         cancellable = itemsProvider.itemsPublisher
-            .sink { [weak self] items in
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        // TODO: Error handling
+                        print(error)
+                }
+            }, receiveValue: { [weak self] items in
                 self?.items = items
-            }
-        let result = itemsProvider.readAndUpdatePublisher()
-        switch result {
-            case .success:
-                break
-            case .failure(let error):
-                // TODO: Error handling
-                print(error)
-        }
+            })
     }
     
     func addNewItem() {
         guard newItemTitle != "" else { return }
-        let result = itemsProvider.createItemEntity(title: newItemTitle)
+        let result = itemsProvider.createItemEntity()
         switch result {
             case .success:
                 break

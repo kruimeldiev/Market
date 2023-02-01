@@ -16,22 +16,25 @@ class TestViewModel: ObservableObject {
     
     @Published var items = [ItemEntity]()
     
-    private var cancellable: AnyCancellable?
+    private var cancellable: AnyCancellable? = nil
     
-    func subscribeToItemsProvider() {
-        
+    init() {
+        subscribeToItemsProvider()
+    }
+    
+    private func subscribeToItemsProvider() {
         cancellable = itemsProvider.itemsPublisher
-            .sink { [weak self] items in
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        // TODO: Error handling
+                        print(error)
+                }
+            }, receiveValue: { [weak self] items in
                 self?.items = items
-            }
-        
-        let test = itemsProvider.readAndUpdatePublisher()
-        switch test {
-            case .success:
-                break
-            case .failure(let failure):
-                print(failure)
-        }
+            })
     }
     
     func deleteTopItem(index: Int) {
