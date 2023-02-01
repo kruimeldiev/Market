@@ -13,7 +13,7 @@ import Factory
 protocol ItemEntityProviderProtocol {
     var itemsPublisher: CurrentValueSubject<[ItemEntity], Never> { get }
     
-    func createItemEntity() -> Result<Bool, Error>
+    func createItemEntity(_ title: String) -> Result<Bool, Error>
     func readAndPublishItemEntities() -> Result<Bool, Error>
     func updateItemEntity() -> Result<Bool, Error>
     func deleteItemEntity(_ item: ItemEntity) -> Result<Bool, Error>
@@ -41,13 +41,12 @@ class ItemEntityProvider: NSObject, ItemEntityProviderProtocol {
         if preview {
             self.createPreviewItemEntities()
         }
-        
-        createItemEntity()
     }
     
     private func startPublishingItems() {
         do {
             try fetchedResultsController?.performFetch()
+            itemsPublisher.send(fetchedResultsController?.fetchedObjects ?? [])
         } catch {
             fatalError("Unable to perform fetch request for ItemEntity")
         }
@@ -66,13 +65,13 @@ class ItemEntityProvider: NSObject, ItemEntityProviderProtocol {
     }
     
     // MARK: - CRUD functions
-    func createItemEntity() -> Result<Bool, Error> {
+    func createItemEntity(_ title: String) -> Result<Bool, Error> {
         let item = ItemEntity(context: coreDataManager.getManagedObjectContext())
         item.id = UUID()
-        item.title = "Hey"
+        item.title = title
+        
         do {
             try coreDataManager.getManagedObjectContext().save()
-            print("Test Created")
             return .success(true)
         } catch {
             return .failure(error)

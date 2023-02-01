@@ -40,10 +40,10 @@ class ListOverviewViewModel: ObservableObject {
     
     func addNewItem() {
         guard newItemTitle != "" else { return }
-        let result = itemsProvider.createItemEntity()
+        let result = itemsProvider.createItemEntity(newItemTitle)
         switch result {
             case .success:
-                break
+                newItemTitle = ""
             case .failure(let error):
                 // TODO: Error handling
                 print(error)

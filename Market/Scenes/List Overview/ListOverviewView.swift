@@ -16,12 +16,16 @@ struct ListOverviewView: View {
         NavigationStack {
             ZStack {
                 ScrollView {
+                    TextField("Title", text: $viewModel.newItemTitle)
+                        .padding()
+                        .onSubmit {
+                            viewModel.addNewItem()
+                        }
                     NavigationLink("Link") {
                         TestView(viewModel: .init())
                     }
                     ForEach(viewModel.items, id: \.self) { item in
                         Text(item.title ?? "empty")
-                        Text("Empty")
 //                        ItemRow(item: item) {
 //                            viewModel.checkItemEntity(item)
 //                        }
