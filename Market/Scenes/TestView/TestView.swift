@@ -14,7 +14,7 @@ struct TestView: View {
     var body: some View {
         VStack {
             ForEach(viewModel.items, id: \.self) { item in
-                Text(item.title ?? "n/a")
+                Text(item.name)
             }
             Button {
                 viewModel.deleteTopItem(index: viewModel.items.count)

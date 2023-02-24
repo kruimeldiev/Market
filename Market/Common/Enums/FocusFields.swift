@@ -8,6 +8,9 @@
 import Foundation
 
 enum FocusField: Hashable {
-    case titleField
-    case noteField
+    
+    case sectionTitleField(id: String)
+    
+    case itemTitleField(id: String)
+    case itemNoteField(id: String)
 }

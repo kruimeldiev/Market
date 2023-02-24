@@ -14,13 +14,20 @@ extension Container {
         coreDataManager.register { CoreDataManager(inMemory: true) }
     }
     
+    // TODO: New setup
     static func setupPreviews() {
         coreDataManager.register { CoreDataManager(inMemory: true) }
         itemEntityProvider.register { ItemEntityProvider(preview: true) }
+        sectionEntityProviderProvider.register { SectionEntityProvider(preview: true) }
     }
     
+    // MARK: - Core data
     static let coreDataManager = Factory(scope: .singleton) {
         CoreDataManager() as CoreDataManagerProtocol
+    }
+    
+    static let sectionEntityProviderProvider = Factory(scope: .shared) {
+        SectionEntityProvider() as SectionEntityProviderProtocol
     }
     
     static let itemEntityProvider = Factory(scope: .shared) {

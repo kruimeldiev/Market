@@ -13,12 +13,13 @@ import Factory
 protocol ItemEntityProviderProtocol {
     var itemsPublisher: CurrentValueSubject<[ItemEntity], Never> { get }
     
-    func createItemEntity(_ title: String) -> Result<Bool, Error>
+    func createItemEntity(sectionId: String) -> Result<String, Error>
     func readAndPublishItemEntities() -> Result<Bool, Error>
     func updateItemEntity() -> Result<Bool, Error>
     func deleteItemEntity(_ item: ItemEntity) -> Result<Bool, Error>
 }
 
+// TODO: Docs
 class ItemEntityProvider: NSObject, ItemEntityProviderProtocol {
     
     @Injected(Container.coreDataManager) private var coreDataManager: CoreDataManagerProtocol
@@ -57,7 +58,7 @@ class ItemEntityProvider: NSObject, ItemEntityProviderProtocol {
         for i in 0..<itemTitles.count {
             let item = ItemEntity(context: coreDataManager.getManagedObjectContext())
             item.id = UUID()
-            item.title = itemTitles[i]
+            item.name = itemTitles[i]
             item.quantity = Int16.random(in: 1..<20)
             item.priority = Int16.random(in: 1...3)
         }
@@ -65,14 +66,19 @@ class ItemEntityProvider: NSObject, ItemEntityProviderProtocol {
     }
     
     // MARK: - CRUD functions
-    func createItemEntity(_ title: String) -> Result<Bool, Error> {
+    func createItemEntity(sectionId: String) -> Result<String, Error> {
         let item = ItemEntity(context: coreDataManager.getManagedObjectContext())
-        item.id = UUID()
-        item.title = title
+        let id = UUID()
+        item.id = id
+        item.name = ""
+        
+        // TODO: Setup this, if needed
+//        item.section
+//        item.section?.id = sectionId
         
         do {
             try coreDataManager.getManagedObjectContext().save()
-            return .success(true)
+            return .success(id.uuidString)
         } catch {
             return .failure(error)
         }

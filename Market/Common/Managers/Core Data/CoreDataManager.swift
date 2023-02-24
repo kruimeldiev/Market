@@ -12,6 +12,7 @@ protocol CoreDataManagerProtocol {
     func getManagedObjectContext() -> NSManagedObjectContext
 }
 
+// TODO: Docs
 class CoreDataManager: CoreDataManagerProtocol {
     
     private var persistentContainer: NSPersistentContainer
@@ -35,6 +36,9 @@ class CoreDataManager: CoreDataManagerProtocol {
                 return
             }
             print("Core Data loaded successfully")
+            
+            // TODO: Need this?
+//            self.persistentContainer.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         }
     }
     

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct ItemRow: View {
     
@@ -14,10 +13,9 @@ struct ItemRow: View {
     private var toggleIsChecked: () -> Void
     
     @State private var titleInputString: String
-    @FocusState private var focusedField: FocusField?
     
     init(item: ItemEntity, toggleIsChecked: @escaping () -> Void) {
-        self._titleInputString = State(initialValue: item.title ?? "")
+        self._titleInputString = State(initialValue: item.name)
         self.item = item
         self.toggleIsChecked = toggleIsChecked
     }
@@ -32,7 +30,6 @@ struct ItemRow: View {
             GeometryReader { geometry in
                 HStack(spacing: 20) {
                     TextField("", text: $titleInputString)
-                        .focused($focusedField, equals: .titleField)
                         .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 20))
                         .foregroundColor(Color(ColorKeys.appTextColor.rawValue))
                         .lineLimit(30)
@@ -44,7 +41,7 @@ struct ItemRow: View {
 //                            .fixedSize()
                     }
                 }
-                .frame(minWidth: 100, maxWidth: geometry.size.width)
+//                .frame(minWidth: 100, maxWidth: geometry.size.width)
                 .fixedSize(horizontal: true, vertical: false)
             }
             Group {
@@ -68,10 +65,6 @@ struct ItemRow: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 6)
-    }
-    
-    func setFocusStateOnTitleField() {
-        self.focusedField = .titleField
     }
 }
 

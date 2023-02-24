@@ -19,6 +19,14 @@
 		AF7C5CDB2975D12E00801F39 /* ItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7C5CDA2975D12E00801F39 /* ItemRow.swift */; };
 		AF7C5CDE2975F89100801F39 /* Market.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AF7C5CDC2975F89100801F39 /* Market.xcdatamodeld */; };
 		AF86425A297CA71700DCA0FA /* FocusFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF864259297CA71700DCA0FA /* FocusFields.swift */; };
+		AF8D2F9929A29CCD0089FE1A /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F9829A29CCD0089FE1A /* SectionHeader.swift */; };
+		AF8D2F9B29A2ABDA0089FE1A /* SectionEntityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F9A29A2ABDA0089FE1A /* SectionEntityProvider.swift */; };
+		AF8D2F9D29A2B3AD0089FE1A /* SectionEntity + Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F9C29A2B3AD0089FE1A /* SectionEntity + Stubs.swift */; };
+		AFDC501129A96A6D000DAF1A /* ItemEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDC500D29A96A6D000DAF1A /* ItemEntity+CoreDataClass.swift */; };
+		AFDC501229A96A6D000DAF1A /* ItemEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDC500E29A96A6D000DAF1A /* ItemEntity+CoreDataProperties.swift */; };
+		AFDC501329A96A6D000DAF1A /* SectionEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDC500F29A96A6D000DAF1A /* SectionEntity+CoreDataClass.swift */; };
+		AFDC501429A96A6D000DAF1A /* SectionEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDC501029A96A6D000DAF1A /* SectionEntity+CoreDataProperties.swift */; };
+		AFE0C5D029A78AFB00F3E825 /* UINavigationController + Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE0C5CF29A78AFB00F3E825 /* UINavigationController + Appearance.swift */; };
 		AFEADE1C2947BDC100891C14 /* MarketApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEADE1B2947BDC100891C14 /* MarketApp.swift */; };
 		AFEADE202947BDC200891C14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFEADE1F2947BDC200891C14 /* Assets.xcassets */; };
 		AFEADE232947BDC200891C14 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFEADE222947BDC200891C14 /* Preview Assets.xcassets */; };
@@ -58,6 +66,15 @@
 		AF7C5CDA2975D12E00801F39 /* ItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRow.swift; sourceTree = "<group>"; };
 		AF7C5CDD2975F89100801F39 /* Market.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Market.xcdatamodel; sourceTree = "<group>"; };
 		AF864259297CA71700DCA0FA /* FocusFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusFields.swift; sourceTree = "<group>"; };
+		AF8D2F9829A29CCD0089FE1A /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		AF8D2F9A29A2ABDA0089FE1A /* SectionEntityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionEntityProvider.swift; sourceTree = "<group>"; };
+		AF8D2F9C29A2B3AD0089FE1A /* SectionEntity + Stubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SectionEntity + Stubs.swift"; sourceTree = "<group>"; };
+		AFDC500D29A96A6D000DAF1A /* ItemEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AFDC500E29A96A6D000DAF1A /* ItemEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AFDC500F29A96A6D000DAF1A /* SectionEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SectionEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AFDC501029A96A6D000DAF1A /* SectionEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SectionEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AFE0C5C629A77F6B00F3E825 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AFE0C5CF29A78AFB00F3E825 /* UINavigationController + Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController + Appearance.swift"; sourceTree = "<group>"; };
 		AFEADE182947BDC100891C14 /* Market.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Market.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFEADE1B2947BDC100891C14 /* MarketApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketApp.swift; sourceTree = "<group>"; };
 		AFEADE1F2947BDC200891C14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -108,6 +125,7 @@
 			children = (
 				AF1DB52F297EE7B300D3B298 /* CoreDataManager.swift */,
 				AF1DB53229816EB900D3B298 /* ItemEntityProvider.swift */,
+				AF8D2F9A29A2ABDA0089FE1A /* SectionEntityProvider.swift */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -124,7 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				AF3483B22979B6D50018AE5F /* Container + Extensions.swift */,
-				AF0EE43A297C370C006DD7E0 /* ItemEntity + Stubs.swift */,
+				AFE0C5CF29A78AFB00F3E825 /* UINavigationController + Appearance.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -136,6 +154,15 @@
 				AF3483B7297A9FCE0018AE5F /* TestViewModel.swift */,
 			);
 			path = TestView;
+			sourceTree = "<group>";
+		};
+		AF3AC797298A981C006622E9 /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				AF0EE43A297C370C006DD7E0 /* ItemEntity + Stubs.swift */,
+				AF8D2F9C29A2B3AD0089FE1A /* SectionEntity + Stubs.swift */,
+			);
+			path = Stubs;
 			sourceTree = "<group>";
 		};
 		AF864258297CA6FF00DCA0FA /* Enums */ = {
@@ -175,6 +202,7 @@
 		AFEADE1A2947BDC100891C14 /* Market */ = {
 			isa = PBXGroup;
 			children = (
+				AFE0C5C629A77F6B00F3E825 /* Info.plist */,
 				AFEADE1B2947BDC100891C14 /* MarketApp.swift */,
 				AFEADE362947C28500891C14 /* Common */,
 				AFEADE4D2947CD6600891C14 /* Models */,
@@ -224,6 +252,7 @@
 		AFEADE362947C28500891C14 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				AF3AC797298A981C006622E9 /* Stubs */,
 				AF864258297CA6FF00DCA0FA /* Enums */,
 				AF3483B12979B6C30018AE5F /* Extensions */,
 				AFB840612947DE6700857EEB /* Managers */,
@@ -267,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				AF7C5CDA2975D12E00801F39 /* ItemRow.swift */,
+				AF8D2F9829A29CCD0089FE1A /* SectionHeader.swift */,
 			);
 			path = "UI Elements";
 			sourceTree = "<group>";
@@ -274,6 +304,10 @@
 		AFEADE4D2947CD6600891C14 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AFDC500D29A96A6D000DAF1A /* ItemEntity+CoreDataClass.swift */,
+				AFDC500E29A96A6D000DAF1A /* ItemEntity+CoreDataProperties.swift */,
+				AFDC500F29A96A6D000DAF1A /* SectionEntity+CoreDataClass.swift */,
+				AFDC501029A96A6D000DAF1A /* SectionEntity+CoreDataProperties.swift */,
 				AF7C5CDC2975F89100801F39 /* Market.xcdatamodeld */,
 			);
 			path = Models;
@@ -403,14 +437,22 @@
 				AF86425A297CA71700DCA0FA /* FocusFields.swift in Sources */,
 				AF7C5CDE2975F89100801F39 /* Market.xcdatamodeld in Sources */,
 				AFEADE312947C01700891C14 /* ListOverviewViewModel.swift in Sources */,
+				AF8D2F9D29A2B3AD0089FE1A /* SectionEntity + Stubs.swift in Sources */,
 				AF3483B32979B6D50018AE5F /* Container + Extensions.swift in Sources */,
+				AFDC501129A96A6D000DAF1A /* ItemEntity+CoreDataClass.swift in Sources */,
+				AFDC501329A96A6D000DAF1A /* SectionEntity+CoreDataClass.swift in Sources */,
 				AFEADE482947CA7100891C14 /* FontKeys.swift in Sources */,
 				AFEADE2F2947C00C00891C14 /* ListOverviewView.swift in Sources */,
 				AF0EE43B297C370C006DD7E0 /* ItemEntity + Stubs.swift in Sources */,
+				AFE0C5D029A78AFB00F3E825 /* UINavigationController + Appearance.swift in Sources */,
 				AFEADE1C2947BDC100891C14 /* MarketApp.swift in Sources */,
+				AF8D2F9929A29CCD0089FE1A /* SectionHeader.swift in Sources */,
 				AF7C5CDB2975D12E00801F39 /* ItemRow.swift in Sources */,
 				AFEADE462947CA2000891C14 /* ColorKeys.swift in Sources */,
 				AF3483B5297A9F940018AE5F /* TestView.swift in Sources */,
+				AFDC501429A96A6D000DAF1A /* SectionEntity+CoreDataProperties.swift in Sources */,
+				AFDC501229A96A6D000DAF1A /* ItemEntity+CoreDataProperties.swift in Sources */,
+				AF8D2F9B29A2ABDA0089FE1A /* SectionEntityProvider.swift in Sources */,
 				AF1DB53329816EB900D3B298 /* ItemEntityProvider.swift in Sources */,
 				AF3483B8297A9FCE0018AE5F /* TestViewModel.swift in Sources */,
 				AF1DB530297EE7B300D3B298 /* CoreDataManager.swift in Sources */,
@@ -592,6 +634,7 @@
 				DEVELOPMENT_TEAM = UFFYTBE3CU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Market/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -602,7 +645,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = nl.casperdaris.Market;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.casperdaris.Groceries;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = minimal;
@@ -622,6 +665,7 @@
 				DEVELOPMENT_TEAM = UFFYTBE3CU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Market/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -632,7 +676,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = nl.casperdaris.Market;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.casperdaris.Groceries;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = minimal;
