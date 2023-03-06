@@ -11,7 +11,7 @@ import CoreData
 
 @objc(SectionEntity)
 public class SectionEntity: NSManagedObject {
-
+    
     public func getAllItems() -> [ItemEntity] {
         // TODO: Don't we need error handling for this?
         return items?.allObjects as? [ItemEntity] ?? []

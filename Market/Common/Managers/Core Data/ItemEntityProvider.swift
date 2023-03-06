@@ -13,7 +13,7 @@ import Factory
 protocol ItemEntityProviderProtocol {
     var itemsPublisher: CurrentValueSubject<[ItemEntity], Never> { get }
     
-    func createItemEntity(sectionId: String) -> Result<String, Error>
+    func createItemEntityWithoutSection() -> Result<String, Error>
     func readAndPublishItemEntities() -> Result<Bool, Error>
     func updateItemEntity() -> Result<Bool, Error>
     func deleteItemEntity(_ item: ItemEntity) -> Result<Bool, Error>
@@ -53,28 +53,25 @@ class ItemEntityProvider: NSObject, ItemEntityProviderProtocol {
         }
     }
     
+    // TODO: Fix this, this makes items if it is not needed
     private func createPreviewItemEntities() {
-        let itemTitles = ["Milk", "Eggs", "Cheese"]
-        for i in 0..<itemTitles.count {
-            let item = ItemEntity(context: coreDataManager.getManagedObjectContext())
-            item.id = UUID()
-            item.name = itemTitles[i]
-            item.quantity = Int16.random(in: 1..<20)
-            item.priority = Int16.random(in: 1...3)
-        }
-        try? coreDataManager.getManagedObjectContext().save()
+//        let itemTitles = ["Milk", "Eggs", "Cheese"]
+//        for i in 0..<itemTitles.count {
+//            let item = ItemEntity(context: coreDataManager.getManagedObjectContext())
+//            item.id = UUID()
+//            item.name = itemTitles[i]
+//            item.quantity = Int16.random(in: 1..<20)
+//            item.priority = Int16.random(in: 1...3)
+//        }
+//        try? coreDataManager.getManagedObjectContext().save()
     }
     
     // MARK: - CRUD functions
-    func createItemEntity(sectionId: String) -> Result<String, Error> {
+    func createItemEntityWithoutSection() -> Result<String, Error> {
         let item = ItemEntity(context: coreDataManager.getManagedObjectContext())
         let id = UUID()
         item.id = id
         item.name = ""
-        
-        // TODO: Setup this, if needed
-//        item.section
-//        item.section?.id = sectionId
         
         do {
             try coreDataManager.getManagedObjectContext().save()

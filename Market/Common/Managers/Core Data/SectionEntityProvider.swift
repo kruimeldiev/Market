@@ -55,13 +55,18 @@ class SectionEntityProvider: NSObject, SectionEntityProviderProtocol {
         }
     }
     
+    /// If this Provider is used for testing and previewing, this function will add SectionEntities for the CoreDatabase
     private func createPreviewSectionEntities() {
-        let sectionTitles = ["Breakfast"]
+        let sectionTitles = ["Breakfast", "Freezer"]
+        let iconTitles = [IconKeys.groceries.rawValue,
+                          IconKeys.seeds.rawValue,
+                          IconKeys.pizza.rawValue,
+                          IconKeys.salad.rawValue,
+                          IconKeys.iceCream.rawValue]
         for i in 0..<sectionTitles.count {
-            let section = SectionEntity(context: coreDataManager.getManagedObjectContext())
-            section.id = UUID()
-            section.name = sectionTitles[i]
-            section.iconName = "noun_breakfast"
+            SectionEntity.createExampleWithObjectContext(coreDataManager.getManagedObjectContext(),
+                                                         name: sectionTitles[i],
+                                                         iconName: iconTitles[Int.random(in: 0..<5)])
         }
         try? coreDataManager.getManagedObjectContext().save()
     }

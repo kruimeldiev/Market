@@ -14,7 +14,6 @@ extension Container {
         coreDataManager.register { CoreDataManager(inMemory: true) }
     }
     
-    // TODO: New setup
     static func setupPreviews() {
         coreDataManager.register { CoreDataManager(inMemory: true) }
         itemEntityProvider.register { ItemEntityProvider(preview: true) }

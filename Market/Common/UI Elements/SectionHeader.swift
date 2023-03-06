@@ -10,7 +10,7 @@ import SwiftUI
 struct SectionHeader: View {
     
     private var section: SectionEntity
-    private var didChangeSectionTitle: (String , String) -> Void
+    private var didChangeSectionName: (String , String) -> Void
     private var toggleSectionIsCollapsed: () -> Void
     private var deleteSection: (String) -> Void
     private var addNewItemToSection: (String) -> Void
@@ -18,13 +18,13 @@ struct SectionHeader: View {
     @State var sectionTitle: String
     
     init(section: SectionEntity,
-         didChangeSectionTitle: @escaping (String, String) -> Void,
+         didChangeSectionName: @escaping (String, String) -> Void,
          toggleSectionIsCollapsed: @escaping () -> Void,
          deleteSection: @escaping (String) -> Void,
          addNewItemToSection: @escaping (String) -> Void) {
         self._sectionTitle = State(initialValue: section.name)
         self.section = section
-        self.didChangeSectionTitle = didChangeSectionTitle
+        self.didChangeSectionName = didChangeSectionName
         self.toggleSectionIsCollapsed = toggleSectionIsCollapsed
         self.deleteSection = deleteSection
         self.addNewItemToSection = addNewItemToSection
@@ -32,16 +32,17 @@ struct SectionHeader: View {
     
     var body: some View {
         VStack {
-            HStack(spacing: 20) {
+            HStack(spacing: 6) {
                 Image(section.iconName ?? "")
                     .resizable()
-                    .frame(width: 36, height: 36)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 40)
                 TextField("", text: $sectionTitle)
                     .font(.custom(FontKeys.Quicksand.bold.rawValue, size: 20))
                     .foregroundColor(Color(ColorKeys.appTextColor.rawValue))
                     .lineLimit(1)
                     .onChange(of: sectionTitle) { newValue in
-                        didChangeSectionTitle(newValue, section.id.uuidString)
+                        didChangeSectionName(newValue, section.id.uuidString)
                     }
                 Button {
                     addNewItemToSection(section.id.uuidString)
@@ -57,7 +58,7 @@ struct SectionHeader: View {
                 }
             }
         }
-        .padding()
+        .padding(20)
     }
 }
 
@@ -75,6 +76,5 @@ struct SectionHeader_Previews: PreviewProvider {
                 
             }
         }
-        .previewDevice("iPhone SE (3rd generation)")
     }
 }

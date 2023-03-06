@@ -18,6 +18,8 @@ struct ListOverviewView: View {
         NavigationStack {
             ZStack {
                 ScrollView {
+                    
+                    // MARK: - Section
                     ForEach(viewModel.sections, id: \.self) { section in
                         SectionHeader(section: section) { newValue, sectionId in
                             viewModel.updateSectionTitle(newValue: newValue, sectionId: sectionId)
@@ -26,22 +28,42 @@ struct ListOverviewView: View {
                         } deleteSection: { sectionId in
                             viewModel.deleteSectionEntity(id: sectionId)
                         } addNewItemToSection: { sectionId in
-                            viewModel.addNewItemToSection(id: sectionId)
+                            viewModel.addNewItemToSection(sectionId)
                         }
                         .focused($focussedField, equals: .sectionTitleField(id: section.id.uuidString))
                         
-                        ForEach(section.getAllItems(), id: \.self) { item in
-                            ItemRow(item: item) {
-                                viewModel.checkItemEntity(item)
+                        // MARK: - Item in section
+                        VStack(spacing: 0) {
+                            ForEach(section.getAllItems(), id: \.self) { item in
+                                ItemRow(item: item) { newValue, itemId in
+                                    viewModel.updateItemName(newValue: newValue, itemId: itemId)
+                                } didChangeItemPriority: { itemId in
+                                    viewModel.changeItemPriority(itemId)
+                                } didChangeItemQuantity: { newQuantity, itemId in
+                                    viewModel.updateItemQuantity(newValue: newQuantity, itemId: itemId)
+                                } toggleItemIsChecked: { itemId in
+                                    viewModel.checkItemEntity(itemId)
+                                }
+                                .focused($focussedField, equals: .itemTitleField(id: item.id.uuidString))
                             }
-                            .focused($focussedField, equals: .itemTitleField(id: item.id.uuidString))
+                            .onDelete { index in
+                                viewModel.deleteItemEntity(index)
+                            }
+                        }
+                        .padding(.top, -8)
+                        .padding(.bottom, 20)
+                        .onTapGesture {
+                            // TODO: Setup tap for new item
+//                            if focussedField == nil {
+//                                viewModel.addNewItemToSection(section.id.uuidString)
+//                            }
                         }
                     }
-                    
-                    Text("\(viewModel.items.count)")
                 }
                 .onTapGesture {
-                    // TODO: Add new item in aisle
+//                    if focussedField != nil {
+//                        focussedField = nil
+//                    }
                 }
             }
             .toolbar {

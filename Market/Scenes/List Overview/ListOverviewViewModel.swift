@@ -58,9 +58,9 @@ class ListOverviewViewModel: ObservableObject {
             })
     }
     
-    // MARK: - SectionsEntity
+    // MARK: - SectionEntity Fucntions
     func addNewSection() {
-        let result = sectionsProvider.createSectionEntity(title: "", imageName: "noun_pizza")
+        let result = sectionsProvider.createSectionEntity(title: "", imageName: IconKeys.groceries.rawValue)
         switch result {
             case .success(let id):
                 listOverviewFocusState = .sectionTitleField(id: id)
@@ -95,13 +95,39 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    // MARK: - ItemEntity
-    func addNewItemToSection(id: String) {
-        guard let section = sections.first(where: { $0.id.uuidString == id }) else { return }
+    func addNewItemToSection(_ sectionId: String) {
+        guard let section = sections.first(where: { $0.id.uuidString == sectionId }) else { return }
         let result = sectionsProvider.addItemToSection(section)
         switch result {
             case .success(let id):
                 listOverviewFocusState = .itemTitleField(id: id)
+            case .failure(let error):
+                // TODO: Error handling
+                print(error)
+        }
+    }
+    
+    // MARK: - ItemEntity Functions
+    func updateItemName(newValue: String, itemId: String) {
+        guard let item = items.first(where: { $0.id.uuidString == itemId }) else { return }
+        item.name = newValue
+        let result = itemsProvider.updateItemEntity()
+        switch result {
+            case .success:
+                break
+            case .failure(let error):
+                // TODO: Error handling
+                print(error)
+        }
+    }
+    
+    func updateItemQuantity(newValue: Int, itemId: String) {
+        guard let item = items.first(where: { $0.id.uuidString == itemId }) else { return }
+        item.quantity = Int16(newValue)
+        let result = itemsProvider.updateItemEntity()
+        switch result {
+            case .success:
+                break
             case .failure(let error):
                 // TODO: Error handling
                 print(error)
@@ -119,12 +145,25 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    func checkItemEntity(_ item: ItemEntity) {
+    func checkItemEntity(_ itemId: String) {
+        guard let item = items.first(where: { $0.id.uuidString == itemId }) else { return }
         item.isChecked.toggle()
         let result = itemsProvider.updateItemEntity()
         switch result {
             case .success:
-                print("Item updated")
+                break
+            case .failure(let error):
+                print(error)
+        }
+    }
+    
+    func changeItemPriority(_ itemId: String) {
+        guard let item = items.first(where: { $0.id.uuidString == itemId }) else { return }
+        item.priority = (item.priority >= 0 && item.priority <= 2) ? item.priority + 1 : 0
+        let result = itemsProvider.updateItemEntity()
+        switch result {
+            case .success:
+                break
             case .failure(let error):
                 print(error)
         }

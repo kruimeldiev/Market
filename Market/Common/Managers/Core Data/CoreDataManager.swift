@@ -36,9 +36,6 @@ class CoreDataManager: CoreDataManagerProtocol {
                 return
             }
             print("Core Data loaded successfully")
-            
-            // TODO: Need this?
-//            self.persistentContainer.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         }
     }
     
