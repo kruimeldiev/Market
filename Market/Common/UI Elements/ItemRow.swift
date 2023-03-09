@@ -10,19 +10,21 @@ import SwiftUI
 struct ItemRow: View {
     
     private var item: ItemEntity
-    private var didChangeItemName: (String, String) -> Void
-    private var didChangeItemPriority: (String) -> Void
-    private var didChangeItemQuantity: (Int, String) -> Void
-    private var toggleItemIsChecked: (String) -> Void
+    private var didChangeItemName: (String) -> Void
+    private var didChangeItemPriority: () -> Void
+    private var didChangeItemQuantity: (Int) -> Void
+    private var toggleItemIsChecked: () -> Void
+    private var didDeleteItem: () -> Void
     
     @State private var itemTitle: String
     @State private var itemQuantity: String
     
     init(item: ItemEntity,
-         didChangeItemName: @escaping (String, String) -> Void,
-         didChangeItemPriority: @escaping (String) -> Void,
-         didChangeItemQuantity: @escaping (Int, String) -> Void,
-         toggleItemIsChecked: @escaping (String) -> Void) {
+         didChangeItemName: @escaping (String) -> Void,
+         didChangeItemPriority: @escaping () -> Void,
+         didChangeItemQuantity: @escaping (Int) -> Void,
+         toggleItemIsChecked: @escaping () -> Void,
+         didDeleteItem: @escaping () -> Void) {
         self._itemTitle = State(initialValue: item.name)
         self._itemQuantity = State(initialValue: String(item.quantity))
         self.item = item
@@ -30,6 +32,7 @@ struct ItemRow: View {
         self.didChangeItemPriority = didChangeItemPriority
         self.didChangeItemQuantity = didChangeItemQuantity
         self.toggleItemIsChecked = toggleItemIsChecked
+        self.didDeleteItem = didDeleteItem
     }
     
     var body: some View {
@@ -38,7 +41,7 @@ struct ItemRow: View {
             // MARK: - Check Circle
             Image(systemName: item.isChecked ? "circle.inset.filled" : "circle")
                 .onTapGesture {
-                    toggleItemIsChecked(item.id.uuidString)
+                    toggleItemIsChecked()
                 }
                 .imageScale(.large)
             
@@ -49,24 +52,24 @@ struct ItemRow: View {
                     TextField("", text: $itemTitle)
                         .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 16))
                         .foregroundColor(Color(item.isChecked
-                                               ? ColorKeys.appAccentTextColor.rawValue
-                                               : ColorKeys.appTextColor.rawValue))
+                                               ? ColorKeys.accentText.rawValue
+                                               : ColorKeys.defaultText.rawValue))
                         .onChange(of: itemTitle) { newValue in
-                            didChangeItemName(newValue, item.id.uuidString)
+                            didChangeItemName(newValue)
                         }
                         .frame(minWidth: 40)
                         .strikethrough(item.isChecked)
-                        
+                    
                     // MARK: - Item quantity
                     TextField(item.quantity > 0 ? "\(item.quantity)" : "  ", text: $itemQuantity)
                         .font(.custom(FontKeys.Quicksand.regular.rawValue, size: 16))
-                        .foregroundColor(Color(ColorKeys.appAccentTextColor.rawValue))
+                        .foregroundColor(Color(ColorKeys.accentText.rawValue))
                         .keyboardType(.numberPad)
                         .onChange(of: itemQuantity) { [oldValue = item.quantity] newValue in
-                            if newValue == "" { didChangeItemQuantity(0, item.id.uuidString) }
+                            if newValue == "" { didChangeItemQuantity(0) }
                             guard let intValue = Int(newValue) else { return }
                             if intValue >= 0 && intValue <= 999 {
-                                didChangeItemQuantity(intValue, item.id.uuidString)
+                                didChangeItemQuantity(intValue)
                             } else {
                                 itemQuantity = String(oldValue)
                             }
@@ -102,11 +105,16 @@ struct ItemRow: View {
                 }
             }
             .onTapGesture {
-                didChangeItemPriority(item.id.uuidString)
+                didChangeItemPriority()
             }
         }
         .padding(.horizontal, 30)
         .padding(.vertical, 6)
+        .background(Color(ColorKeys.defaultBackground.rawValue))
+        .contentShape(Rectangle())
+        .modifier(SwipeableView(callback: {
+            didDeleteItem()
+        }))
     }
 }
 
@@ -115,34 +123,40 @@ struct ItemRow_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             
-            ItemRow(item: ItemEntity.shortExampleItem) { newValue, itemId in
+            ItemRow(item: ItemEntity.shortExampleItem) { newValue in
 
-            } didChangeItemPriority: { itemId in
+            } didChangeItemPriority: {
 
-            } didChangeItemQuantity: { newQuantity, itemId in
+            } didChangeItemQuantity: { newQuantity in
 
-            } toggleItemIsChecked: { itemId in
+            } toggleItemIsChecked: {
 
+            } didDeleteItem: {
+                
             }
 
-            ItemRow(item: ItemEntity.mediumExampleItem) { newValue, itemId in
+            ItemRow(item: ItemEntity.mediumExampleItem) { newValue in
 
-            } didChangeItemPriority: { itemId in
+            } didChangeItemPriority: {
 
-            } didChangeItemQuantity: { newQuantity, itemId in
+            } didChangeItemQuantity: { newQuantity in
 
-            } toggleItemIsChecked: { itemId in
+            } toggleItemIsChecked: {
 
+            } didDeleteItem: {
+                
             }
 
-            ItemRow(item: ItemEntity.longExampleItem) { newValue, itemId in
+            ItemRow(item: ItemEntity.longExampleItem) { newValue in
 
-            } didChangeItemPriority: { itemId in
+            } didChangeItemPriority: {
 
-            } didChangeItemQuantity: { newQuantity, itemId in
+            } didChangeItemQuantity: { newQuantity in
 
-            } toggleItemIsChecked: { itemId in
+            } toggleItemIsChecked: {
 
+            } didDeleteItem: {
+                
             }
         }
     }

@@ -70,8 +70,8 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    func updateSectionTitle(newValue: String, sectionId: String) {
-        guard let section = sections.first(where: { $0.id.uuidString == sectionId }) else { return }
+    func updateSectionTitle(newValue: String, sectionId: UUID) {
+        guard let section = sections.first(where: { $0.id == sectionId }) else { return }
         section.name = newValue
         let result = sectionsProvider.updateSectionEntity(section)
         switch result {
@@ -83,8 +83,8 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    func deleteSectionEntity(id: String) {
-        guard let section = sections.first(where: { $0.id.uuidString == id }) else { return }
+    func deleteSectionEntity(id: UUID) {
+        guard let section = sections.first(where: { $0.id == id }) else { return }
         let result = sectionsProvider.deleteSectionEntity(section)
         switch result {
             case .success:
@@ -95,8 +95,8 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    func addNewItemToSection(_ sectionId: String) {
-        guard let section = sections.first(where: { $0.id.uuidString == sectionId }) else { return }
+    func addNewItemToSection(_ sectionId: UUID) {
+        guard let section = sections.first(where: { $0.id == sectionId }) else { return }
         let result = sectionsProvider.addItemToSection(section)
         switch result {
             case .success(let id):
@@ -108,8 +108,8 @@ class ListOverviewViewModel: ObservableObject {
     }
     
     // MARK: - ItemEntity Functions
-    func updateItemName(newValue: String, itemId: String) {
-        guard let item = items.first(where: { $0.id.uuidString == itemId }) else { return }
+    func updateItemName(newValue: String, itemId: UUID) {
+        guard let item = items.first(where: { $0.id == itemId }) else { return }
         item.name = newValue
         let result = itemsProvider.updateItemEntity()
         switch result {
@@ -121,8 +121,8 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    func updateItemQuantity(newValue: Int, itemId: String) {
-        guard let item = items.first(where: { $0.id.uuidString == itemId }) else { return }
+    func updateItemQuantity(newValue: Int, itemId: UUID) {
+        guard let item = items.first(where: { $0.id == itemId }) else { return }
         item.quantity = Int16(newValue)
         let result = itemsProvider.updateItemEntity()
         switch result {
@@ -134,19 +134,19 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    func deleteItemEntity(_ index: IndexSet) {
-        guard let item = index.map({ self.items[$0] }).first else { return }
+    func deleteItem(_ itemId: UUID) {
+        guard let item = items.first(where: { $0.id == itemId }) else { return }
         let result = itemsProvider.deleteItemEntity(item)
         switch result {
             case .success:
-                print("Item deleted")
+                break
             case .failure(let error):
                 print(error)
         }
     }
     
-    func checkItemEntity(_ itemId: String) {
-        guard let item = items.first(where: { $0.id.uuidString == itemId }) else { return }
+    func checkItemEntity(_ itemId: UUID) {
+        guard let item = items.first(where: { $0.id == itemId }) else { return }
         item.isChecked.toggle()
         let result = itemsProvider.updateItemEntity()
         switch result {
@@ -157,8 +157,8 @@ class ListOverviewViewModel: ObservableObject {
         }
     }
     
-    func changeItemPriority(_ itemId: String) {
-        guard let item = items.first(where: { $0.id.uuidString == itemId }) else { return }
+    func changeItemPriority(_ itemId: UUID) {
+        guard let item = items.first(where: { $0.id == itemId }) else { return }
         item.priority = (item.priority >= 0 && item.priority <= 2) ? item.priority + 1 : 0
         let result = itemsProvider.updateItemEntity()
         switch result {

@@ -16,6 +16,7 @@
 		AF3483B32979B6D50018AE5F /* Container + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3483B22979B6D50018AE5F /* Container + Extensions.swift */; };
 		AF3483B5297A9F940018AE5F /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3483B4297A9F940018AE5F /* TestView.swift */; };
 		AF3483B8297A9FCE0018AE5F /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3483B7297A9FCE0018AE5F /* TestViewModel.swift */; };
+		AF6CD77129B88F8600DA3C5D /* SwipeableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6CD77029B88F8600DA3C5D /* SwipeableView.swift */; };
 		AF7C5CDB2975D12E00801F39 /* ItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7C5CDA2975D12E00801F39 /* ItemRow.swift */; };
 		AF7C5CDE2975F89100801F39 /* Market.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AF7C5CDC2975F89100801F39 /* Market.xcdatamodeld */; };
 		AF86425A297CA71700DCA0FA /* FocusFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF864259297CA71700DCA0FA /* FocusFields.swift */; };
@@ -64,6 +65,7 @@
 		AF3483B22979B6D50018AE5F /* Container + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container + Extensions.swift"; sourceTree = "<group>"; };
 		AF3483B4297A9F940018AE5F /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		AF3483B7297A9FCE0018AE5F /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
+		AF6CD77029B88F8600DA3C5D /* SwipeableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableView.swift; sourceTree = "<group>"; };
 		AF7C5CDA2975D12E00801F39 /* ItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRow.swift; sourceTree = "<group>"; };
 		AF7C5CDD2975F89100801F39 /* Market.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Market.xcdatamodel; sourceTree = "<group>"; };
 		AF864259297CA71700DCA0FA /* FocusFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusFields.swift; sourceTree = "<group>"; };
@@ -167,6 +169,14 @@
 			path = Stubs;
 			sourceTree = "<group>";
 		};
+		AF6CD76F29B88F6300DA3C5D /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				AF6CD77029B88F8600DA3C5D /* SwipeableView.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
 		AF864258297CA6FF00DCA0FA /* Enums */ = {
 			isa = PBXGroup;
 			children = (
@@ -259,6 +269,7 @@
 				AF3483B12979B6C30018AE5F /* Extensions */,
 				AFB840612947DE6700857EEB /* Managers */,
 				AFEADE4C2947CBBC00891C14 /* UI Elements */,
+				AF6CD76F29B88F6300DA3C5D /* ViewModifiers */,
 				AFEADE492947CB1200891C14 /* Errors */,
 				AFEADE372947C29400891C14 /* Keys */,
 			);
@@ -454,6 +465,7 @@
 				AFE3610B29AA759500C29FC0 /* IconKeys.swift in Sources */,
 				AFEADE462947CA2000891C14 /* ColorKeys.swift in Sources */,
 				AF3483B5297A9F940018AE5F /* TestView.swift in Sources */,
+				AF6CD77129B88F8600DA3C5D /* SwipeableView.swift in Sources */,
 				AFDC501429A96A6D000DAF1A /* SectionEntity+CoreDataProperties.swift in Sources */,
 				AFDC501229A96A6D000DAF1A /* ItemEntity+CoreDataProperties.swift in Sources */,
 				AF8D2F9B29A2ABDA0089FE1A /* SectionEntityProvider.swift in Sources */,

@@ -18,63 +18,55 @@ struct ListOverviewView: View {
         NavigationStack {
             ZStack {
                 ScrollView {
-                    
                     // MARK: - Section
                     ForEach(viewModel.sections, id: \.self) { section in
-                        SectionHeader(section: section) { newValue, sectionId in
-                            viewModel.updateSectionTitle(newValue: newValue, sectionId: sectionId)
+                        SectionHeader(section: section) { newValue in
+                            viewModel.updateSectionTitle(newValue: newValue, sectionId: section.id)
                         } toggleSectionIsCollapsed: {
                             // TODO: Add collapse feature
-                        } deleteSection: { sectionId in
-                            viewModel.deleteSectionEntity(id: sectionId)
-                        } addNewItemToSection: { sectionId in
-                            viewModel.addNewItemToSection(sectionId)
+                        } deleteSection: {
+                            viewModel.deleteSectionEntity(id: section.id)
+                        } addNewItemToSection: {
+                            viewModel.addNewItemToSection(section.id)
                         }
                         .focused($focussedField, equals: .sectionTitleField(id: section.id.uuidString))
                         
                         // MARK: - Item in section
-                        VStack(spacing: 0) {
+                        LazyVStack(spacing: 2) {
                             ForEach(section.getAllItems(), id: \.self) { item in
-                                ItemRow(item: item) { newValue, itemId in
-                                    viewModel.updateItemName(newValue: newValue, itemId: itemId)
-                                } didChangeItemPriority: { itemId in
-                                    viewModel.changeItemPriority(itemId)
-                                } didChangeItemQuantity: { newQuantity, itemId in
-                                    viewModel.updateItemQuantity(newValue: newQuantity, itemId: itemId)
-                                } toggleItemIsChecked: { itemId in
-                                    viewModel.checkItemEntity(itemId)
+                                ItemRow(item: item) { newValue in
+                                    viewModel.updateItemName(newValue: newValue, itemId: item.id)
+                                } didChangeItemPriority: {
+                                    viewModel.changeItemPriority(item.id)
+                                } didChangeItemQuantity: { newQuantity in
+                                    viewModel.updateItemQuantity(newValue: newQuantity, itemId: item.id)
+                                } toggleItemIsChecked: {
+                                    viewModel.checkItemEntity(item.id)
+                                } didDeleteItem: {
+                                    viewModel.deleteItem(item.id)
                                 }
                                 .focused($focussedField, equals: .itemTitleField(id: item.id.uuidString))
-                            }
-                            .onDelete { index in
-                                viewModel.deleteItemEntity(index)
                             }
                         }
                         .padding(.top, -8)
                         .padding(.bottom, 20)
-                        .onTapGesture {
-                            // TODO: Setup tap for new item
-//                            if focussedField == nil {
-//                                viewModel.addNewItemToSection(section.id.uuidString)
-//                            }
-                        }
                     }
                 }
                 .onTapGesture {
-//                    if focussedField != nil {
-//                        focussedField = nil
-//                    }
+                    if focussedField != nil {
+                        focussedField = nil
+                    }
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            viewModel.addNewSection()
-                        } label: {
-                            Image(systemName: "plus.circle")
-                                .font(.headline)
-                                .foregroundColor(Color(ColorKeys.appTextColor.rawValue))
-                        }
+                    Button {
+                        viewModel.addNewSection()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .font(.headline)
+                            .foregroundColor(Color(ColorKeys.defaultAccent.rawValue))
+                    }
                 }
             }
             .navigationTitle("Groceries")

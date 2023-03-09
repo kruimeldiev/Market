@@ -122,7 +122,6 @@ class SectionEntityProvider: NSObject, SectionEntityProviderProtocol {
     }
     
     // MARK: - Relationships
-    
     func addItemToSection(_ section: SectionEntity) -> Result<String, Error> {
         let item = ItemEntity(context: coreDataManager.getManagedObjectContext())
         let itemId = UUID()

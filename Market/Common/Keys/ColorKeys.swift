@@ -9,8 +9,9 @@ import Foundation
 
 enum ColorKeys: String {
     
-    case appAccentColor = "AppAccentColor"
-    case appTextColor = "AppTextColor"
-    case appAccentTextColor = "AppAccentTextColor"
-    case appBackgroundColor = "AppBackgroundColor"
+    case defaultAccent = "AppAccentColor"
+    case defaultText = "AppTextColor"
+    case accentText = "AppAccentTextColor"
+    case defaultBackground = "AppBackgroundColor"
+    case errorRed = "AppErrorRedColor"
 }
