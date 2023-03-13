@@ -8,7 +8,7 @@
 import Foundation
 
 // TODO: Might want to delete this
-enum IconKeys: String {
+//enum IconKeys: String {
     
 //    case salad = "salad"
 //    case steak = "steak"
@@ -17,4 +17,4 @@ enum IconKeys: String {
 //    case butter = "butter"
 //    case groceries = "groceries"
 //    case seeds = "seeds"
-}
+//}

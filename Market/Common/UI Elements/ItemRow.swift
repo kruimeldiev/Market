@@ -69,6 +69,7 @@ struct ItemRow: View {
                         }
                         .frame(minWidth: 40)
                         .strikethrough(item.isChecked)
+                        .gesture(TapGesture().onEnded { _ in })
                     
                     // MARK: - Item quantity
                     TextField(item.quantity > 0 ? "\(item.quantity)" : "  ", text: $itemQuantity)
@@ -87,6 +88,7 @@ struct ItemRow: View {
                         .onAppear {
                             itemQuantity = item.quantity > 0 ? "\(item.quantity)" : ""
                         }
+                        .gesture(TapGesture().onEnded { _ in })
                         .frame(width: 32)
                 }
                 .frame(maxWidth: geometry.size.width, maxHeight: .infinity)

@@ -32,28 +32,31 @@ struct SectionHeader: View {
     
     var body: some View {
         VStack {
-            HStack(spacing: 6) {
-                Image(section.iconName ?? "")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 40)
+            HStack {
                 TextField("", text: $sectionTitle)
-                    .font(.custom(FontKeys.Quicksand.bold.rawValue, size: 20))
-                    .foregroundColor(Color(ColorKeys.defaultText.rawValue))
+                    .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 14))
+                    .foregroundColor(Color(ColorKeys.accentText.rawValue))
                     .lineLimit(1)
+                    .gesture(TapGesture().onEnded { _ in })
                     .onChange(of: sectionTitle) { newValue in
                         didChangeSectionName(newValue)
                     }
+                    .onSubmit {
+                        addNewItemToSection()
+                    }
                 
-                Button {
-                    deleteSection()
-                } label: {
-                    Image(systemName: "minus")
-                        .foregroundColor(.red)
+                if section.name != "" {
+                    Button {
+                        deleteSection()
+                    } label: {
+                        Image(systemName: "info")
+                            .foregroundColor(.gray)
+                    }
                 }
             }
+            .padding(.horizontal, 30)
         }
-        .padding(20)
+        .padding(.vertical, 4)
     }
 }
 

@@ -20,7 +20,7 @@ struct ListOverviewView: View {
                 ScrollView {
                     // MARK: - Section
                     ForEach(viewModel.sections, id: \.self) { section in
-                        Group {
+                        VStack {
                             SectionHeader(section: section) { newValue in
                                 viewModel.updateSectionTitle(newValue: newValue, sectionId: section.id)
                             } toggleSectionIsCollapsed: {
@@ -47,6 +47,10 @@ struct ListOverviewView: View {
                                         viewModel.deleteItem(item.id)
                                     }
                                     .focused($focussedField, equals: .itemTitleField(id: item.id.uuidString))
+                                    
+                                    // TODO: Remove bottom divider?
+                                    Divider()
+                                        .padding(.horizontal, 20)
                                 }
                             }
                             .padding(.top, -8)
@@ -79,6 +83,18 @@ struct ListOverviewView: View {
                                         radius: 20)
                         }
                         .padding(40)
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        // TODO: Add clear all button
+                        print("Todo: Add clear all button")
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .font(.headline)
+                            .foregroundColor(.gray)
                     }
                 }
             }

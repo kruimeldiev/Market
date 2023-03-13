@@ -60,7 +60,8 @@ class ListOverviewViewModel: ObservableObject {
     
     // MARK: - SectionEntity Fucntions
     func addNewSection() {
-        let result = sectionsProvider.createSectionEntity(title: "", imageName: IconKeys.groceries.rawValue)
+        // TODO: Remove image name. also from CoreData
+        let result = sectionsProvider.createSectionEntity(title: "", imageName: "")
         switch result {
             case .success(let id):
                 listOverviewFocusState = .sectionTitleField(id: id)

@@ -14,7 +14,9 @@ extension SectionEntity {
     static var mediumExampleSection: SectionEntity {
         let section = SectionEntity(context: CoreDataManager(inMemory: true).getManagedObjectContext())
         section.name = "Fruits & veggies"
-        section.iconName = IconKeys.groceries.rawValue
+        // TODO: Remove images
+        section.iconName = ""
+//        section.iconName = IconKeys.groceries.rawValue
         return section
     }
     

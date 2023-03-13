@@ -42,7 +42,7 @@ struct SwipeableView: ViewModifier {
             // MARK: - Content
             content
                 .offset(x: rowOffsetX)
-                .gesture(DragGesture()
+                .gesture(DragGesture(coordinateSpace: .global)
                     .onChanged { value in
                         onSwipeChanged(value: value)
                     }.onEnded { value in
