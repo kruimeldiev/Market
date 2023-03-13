@@ -44,13 +44,7 @@ struct SectionHeader: View {
                     .onChange(of: sectionTitle) { newValue in
                         didChangeSectionName(newValue)
                     }
-                Button {
-                    addNewItemToSection()
-                } label: {
-                    Image(systemName: "plus")
-                        .foregroundColor(.green)
-                }
-                Spacer(minLength: 20)
+                
                 Button {
                     deleteSection()
                 } label: {

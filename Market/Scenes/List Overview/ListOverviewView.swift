@@ -20,36 +20,41 @@ struct ListOverviewView: View {
                 ScrollView {
                     // MARK: - Section
                     ForEach(viewModel.sections, id: \.self) { section in
-                        SectionHeader(section: section) { newValue in
-                            viewModel.updateSectionTitle(newValue: newValue, sectionId: section.id)
-                        } toggleSectionIsCollapsed: {
-                            // TODO: Add collapse feature
-                        } deleteSection: {
-                            viewModel.deleteSectionEntity(id: section.id)
-                        } addNewItemToSection: {
+                        Group {
+                            SectionHeader(section: section) { newValue in
+                                viewModel.updateSectionTitle(newValue: newValue, sectionId: section.id)
+                            } toggleSectionIsCollapsed: {
+                                // TODO: Add collapse feature
+                            } deleteSection: {
+                                viewModel.deleteSectionEntity(id: section.id)
+                            } addNewItemToSection: {
+                                viewModel.addNewItemToSection(section.id)
+                            }
+                            .focused($focussedField, equals: .sectionTitleField(id: section.id.uuidString))
+                            
+                            // MARK: - Item in section
+                            LazyVStack(spacing: 2) {
+                                ForEach(section.getAllItems(), id: \.self) { item in
+                                    ItemRow(item: item) { newValue in
+                                        viewModel.updateItemName(newValue: newValue, itemId: item.id)
+                                    } didChangeItemPriority: {
+                                        viewModel.changeItemPriority(item.id)
+                                    } didChangeItemQuantity: { newQuantity in
+                                        viewModel.updateItemQuantity(newValue: newQuantity, itemId: item.id)
+                                    } toggleItemIsChecked: {
+                                        viewModel.checkItemEntity(item.id)
+                                    } didDeleteItem: {
+                                        viewModel.deleteItem(item.id)
+                                    }
+                                    .focused($focussedField, equals: .itemTitleField(id: item.id.uuidString))
+                                }
+                            }
+                            .padding(.top, -8)
+                            .padding(.bottom, 20)
+                        }
+                        .onTapGesture {
                             viewModel.addNewItemToSection(section.id)
                         }
-                        .focused($focussedField, equals: .sectionTitleField(id: section.id.uuidString))
-                        
-                        // MARK: - Item in section
-                        LazyVStack(spacing: 2) {
-                            ForEach(section.getAllItems(), id: \.self) { item in
-                                ItemRow(item: item) { newValue in
-                                    viewModel.updateItemName(newValue: newValue, itemId: item.id)
-                                } didChangeItemPriority: {
-                                    viewModel.changeItemPriority(item.id)
-                                } didChangeItemQuantity: { newQuantity in
-                                    viewModel.updateItemQuantity(newValue: newQuantity, itemId: item.id)
-                                } toggleItemIsChecked: {
-                                    viewModel.checkItemEntity(item.id)
-                                } didDeleteItem: {
-                                    viewModel.deleteItem(item.id)
-                                }
-                                .focused($focussedField, equals: .itemTitleField(id: item.id.uuidString))
-                            }
-                        }
-                        .padding(.top, -8)
-                        .padding(.bottom, 20)
                     }
                 }
                 .onTapGesture {
@@ -70,10 +75,10 @@ struct ListOverviewView: View {
                                                            height: 60,
                                                            backgroundColor: Color(ColorKeys.defaultAccent.rawValue),
                                                            iconName: "plus"))
-                                .shadow(color: Color(ColorKeys.defaultAccentSoft.rawValue).opacity(0.4),
-                                        radius: 10)
+                                .shadow(color: Color(ColorKeys.defaultAccentSoft.rawValue).opacity(0.6),
+                                        radius: 20)
                         }
-                        .padding(20)
+                        .padding(40)
                     }
                 }
             }
