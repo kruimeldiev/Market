@@ -35,7 +35,7 @@ struct SwipeableView: ViewModifier {
                         .font(.body)
                         .foregroundColor(Color(ColorKeys.defaultBackground.rawValue))
                         .frame(width: 60)
-                        .offset(x: rowOffsetX + 70)
+                        .offset(x: rowOffsetX + 60)
                 }
             }
             
@@ -62,15 +62,15 @@ struct SwipeableView: ViewModifier {
                 impactFeedbackCalled = true
             } else if contextMenuIsShowing {
                 /// If the context menu is showing and the user starts swioing the View again, we have to make sure that the offset stays consistant
-                rowOffsetX = value.translation.width - 70
+                rowOffsetX = value.translation.width - 60
             } else {
                 rowOffsetX = value.translation.width
             }
         } else if value.translation.width >= 0
-                    && value.translation.width <= 70
+                    && value.translation.width <= 60
                     && contextMenuIsShowing {
             /// If the context menu is showing and the user swipes back, this block makes the menu dissappear
-            rowOffsetX = value.translation.width - 70
+            rowOffsetX = value.translation.width - 60
         }
     }
 
@@ -81,11 +81,11 @@ struct SwipeableView: ViewModifier {
                     /// If swiped more than half the screen, the context function should be called
                     rowOffsetX = -1000
                     callback()
-                } else if -rowOffsetX > 50 {
+                } else if -rowOffsetX > 70 {
                     /// Show the context menu
                     contextMenuIsShowing = true
                     impactFeedbackCalled = false
-                    rowOffsetX = -70
+                    rowOffsetX = -60
                 } else {
                     /// Hide the context menu
                     contextMenuIsShowing = false

@@ -39,11 +39,27 @@ struct ItemRow: View {
         HStack(spacing: 20) {
             
             // MARK: - Check Circle
-            Image(systemName: item.isChecked ? "circle.inset.filled" : "circle")
-                .onTapGesture {
-                    toggleItemIsChecked()
+//            Image(systemName: item.isChecked ? "circle.inset.filled" : "circle")
+//                .onTapGesture {
+//                    toggleItemIsChecked()
+//                }
+//                .imageScale(.large)
+            
+            ZStack {
+                Image(systemName: item.isChecked ? "circle.fill" : "circle")
+                    .foregroundColor(item.isChecked
+                                     ? Color(ColorKeys.defaultAccentSoft.rawValue)
+                                     : .gray)
+                    .onTapGesture {
+                        toggleItemIsChecked()
+                    }
+                    .imageScale(.large)
+                if item.isChecked {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(Color(ColorKeys.defaultAccent.rawValue))
+                        .imageScale(.small)
                 }
-                .imageScale(.large)
+            }
             
             GeometryReader { geometry in
                 HStack(spacing: 20) {

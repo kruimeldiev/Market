@@ -57,15 +57,23 @@ struct ListOverviewView: View {
                         focussedField = nil
                     }
                 }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        viewModel.addNewSection()
-                    } label: {
-                        Image(systemName: "plus.circle")
-                            .font(.headline)
-                            .foregroundColor(Color(ColorKeys.defaultAccent.rawValue))
+                
+                // MARK: - Plus button
+                if focussedField == nil {
+                    VStack {
+                        Spacer()
+                        Button {
+                            viewModel.addNewSection()
+                        } label: {
+                            Text("")
+                                .modifier(AppPrimaryButton(width: 60,
+                                                           height: 60,
+                                                           backgroundColor: Color(ColorKeys.defaultAccent.rawValue),
+                                                           iconName: "plus"))
+                                .shadow(color: Color(ColorKeys.defaultAccentSoft.rawValue).opacity(0.4),
+                                        radius: 10)
+                        }
+                        .padding(20)
                     }
                 }
             }

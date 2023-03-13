@@ -12,10 +12,9 @@
 		AF1DB530297EE7B300D3B298 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1DB52F297EE7B300D3B298 /* CoreDataManager.swift */; };
 		AF1DB53329816EB900D3B298 /* ItemEntityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1DB53229816EB900D3B298 /* ItemEntityProvider.swift */; };
 		AF1DB53629828B3400D3B298 /* ItemEntityProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1DB53529828B3400D3B298 /* ItemEntityProviderMock.swift */; };
+		AF22E23C29BF9E320063C290 /* AppPrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22E23B29BF9E320063C290 /* AppPrimaryButton.swift */; };
 		AF3483B02979B6AE0018AE5F /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = AF3483AF2979B6AE0018AE5F /* Factory */; };
 		AF3483B32979B6D50018AE5F /* Container + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3483B22979B6D50018AE5F /* Container + Extensions.swift */; };
-		AF3483B5297A9F940018AE5F /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3483B4297A9F940018AE5F /* TestView.swift */; };
-		AF3483B8297A9FCE0018AE5F /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3483B7297A9FCE0018AE5F /* TestViewModel.swift */; };
 		AF6CD77129B88F8600DA3C5D /* SwipeableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6CD77029B88F8600DA3C5D /* SwipeableView.swift */; };
 		AF7C5CDB2975D12E00801F39 /* ItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7C5CDA2975D12E00801F39 /* ItemRow.swift */; };
 		AF7C5CDE2975F89100801F39 /* Market.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AF7C5CDC2975F89100801F39 /* Market.xcdatamodeld */; };
@@ -62,9 +61,8 @@
 		AF1DB52F297EE7B300D3B298 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		AF1DB53229816EB900D3B298 /* ItemEntityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEntityProvider.swift; sourceTree = "<group>"; };
 		AF1DB53529828B3400D3B298 /* ItemEntityProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEntityProviderMock.swift; sourceTree = "<group>"; };
+		AF22E23B29BF9E320063C290 /* AppPrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPrimaryButton.swift; sourceTree = "<group>"; };
 		AF3483B22979B6D50018AE5F /* Container + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container + Extensions.swift"; sourceTree = "<group>"; };
-		AF3483B4297A9F940018AE5F /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
-		AF3483B7297A9FCE0018AE5F /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		AF6CD77029B88F8600DA3C5D /* SwipeableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableView.swift; sourceTree = "<group>"; };
 		AF7C5CDA2975D12E00801F39 /* ItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRow.swift; sourceTree = "<group>"; };
 		AF7C5CDD2975F89100801F39 /* Market.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Market.xcdatamodel; sourceTree = "<group>"; };
@@ -151,15 +149,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		AF3483B6297A9F970018AE5F /* TestView */ = {
-			isa = PBXGroup;
-			children = (
-				AF3483B4297A9F940018AE5F /* TestView.swift */,
-				AF3483B7297A9FCE0018AE5F /* TestViewModel.swift */,
-			);
-			path = TestView;
-			sourceTree = "<group>";
-		};
 		AF3AC797298A981C006622E9 /* Stubs */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				AF6CD77029B88F8600DA3C5D /* SwipeableView.swift */,
+				AF22E23B29BF9E320063C290 /* AppPrimaryButton.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -236,7 +226,6 @@
 		AFEADE2A2947BEE600891C14 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				AF3483B6297A9F970018AE5F /* TestView */,
 				AFEADE2C2947BFD200891C14 /* List Overview */,
 			);
 			path = Scenes;
@@ -460,17 +449,16 @@
 				AF0EE43B297C370C006DD7E0 /* ItemEntity + Stubs.swift in Sources */,
 				AFE0C5D029A78AFB00F3E825 /* UINavigationController + Appearance.swift in Sources */,
 				AFEADE1C2947BDC100891C14 /* MarketApp.swift in Sources */,
+				AF22E23C29BF9E320063C290 /* AppPrimaryButton.swift in Sources */,
 				AF8D2F9929A29CCD0089FE1A /* SectionHeader.swift in Sources */,
 				AF7C5CDB2975D12E00801F39 /* ItemRow.swift in Sources */,
 				AFE3610B29AA759500C29FC0 /* IconKeys.swift in Sources */,
 				AFEADE462947CA2000891C14 /* ColorKeys.swift in Sources */,
-				AF3483B5297A9F940018AE5F /* TestView.swift in Sources */,
 				AF6CD77129B88F8600DA3C5D /* SwipeableView.swift in Sources */,
 				AFDC501429A96A6D000DAF1A /* SectionEntity+CoreDataProperties.swift in Sources */,
 				AFDC501229A96A6D000DAF1A /* ItemEntity+CoreDataProperties.swift in Sources */,
 				AF8D2F9B29A2ABDA0089FE1A /* SectionEntityProvider.swift in Sources */,
 				AF1DB53329816EB900D3B298 /* ItemEntityProvider.swift in Sources */,
-				AF3483B8297A9FCE0018AE5F /* TestViewModel.swift in Sources */,
 				AF1DB530297EE7B300D3B298 /* CoreDataManager.swift in Sources */,
 				AFEADE4B2947CB2200891C14 /* ApplicationError.swift in Sources */,
 			);
