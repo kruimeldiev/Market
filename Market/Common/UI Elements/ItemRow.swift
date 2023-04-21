@@ -11,28 +11,30 @@ struct ItemRow: View {
     
     private var item: ItemEntity
     private var didChangeItemName: (String) -> Void
-    private var didChangeItemPriority: () -> Void
-    private var didChangeItemQuantity: (Int) -> Void
+    private var didChangeItemQuantity: (String) -> Void
     private var toggleItemIsChecked: () -> Void
     private var didDeleteItem: () -> Void
+    private var doCreateNewItem: () -> Void
     
     @State private var itemTitle: String
     @State private var itemQuantity: String
     
+    @FocusState var focusedField: FocusableField?
+    
     init(item: ItemEntity,
          didChangeItemName: @escaping (String) -> Void,
-         didChangeItemPriority: @escaping () -> Void,
-         didChangeItemQuantity: @escaping (Int) -> Void,
+         didChangeItemQuantity: @escaping (String) -> Void,
          toggleItemIsChecked: @escaping () -> Void,
-         didDeleteItem: @escaping () -> Void) {
+         didDeleteItem: @escaping () -> Void,
+         doCreateNewItem: @escaping () -> Void) {
         self._itemTitle = State(initialValue: item.name)
-        self._itemQuantity = State(initialValue: String(item.quantity))
+        self._itemQuantity = State(initialValue: item.quantity)
         self.item = item
         self.didChangeItemName = didChangeItemName
-        self.didChangeItemPriority = didChangeItemPriority
         self.didChangeItemQuantity = didChangeItemQuantity
         self.toggleItemIsChecked = toggleItemIsChecked
         self.didDeleteItem = didDeleteItem
+        self.doCreateNewItem = doCreateNewItem
     }
     
     var body: some View {
@@ -55,78 +57,61 @@ struct ItemRow: View {
                 }
             }
             
-            GeometryReader { geometry in
-                HStack(spacing: 20) {
-                    
-                    // MARK: - Item name
-                    TextField("", text: $itemTitle)
-                        .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 16))
-                        .foregroundColor(Color(item.isChecked
-                                               ? ColorKeys.accentText.rawValue
-                                               : ColorKeys.defaultText.rawValue))
-                        .onChange(of: itemTitle) { newValue in
-                            didChangeItemName(newValue)
-                        }
-                        .frame(minWidth: 40)
-                        .strikethrough(item.isChecked)
-                        .gesture(TapGesture().onEnded { _ in })
-                    
-                    // MARK: - Item quantity
-                    TextField(item.quantity > 0 ? "\(item.quantity)" : "  ", text: $itemQuantity)
-                        .font(.custom(FontKeys.Quicksand.regular.rawValue, size: 16))
-                        .foregroundColor(Color(ColorKeys.accentText.rawValue))
-                        .keyboardType(.numberPad)
-                        .onChange(of: itemQuantity) { [oldValue = item.quantity] newValue in
-                            if newValue == "" { didChangeItemQuantity(0) }
-                            guard let intValue = Int(newValue) else { return }
-                            if intValue >= 0 && intValue <= 999 {
-                                didChangeItemQuantity(intValue)
-                            } else {
-                                itemQuantity = String(oldValue)
-                            }
-                        }
-                        .onAppear {
-                            itemQuantity = item.quantity > 0 ? "\(item.quantity)" : ""
-                        }
-                        .gesture(TapGesture().onEnded { _ in })
-                        .frame(width: 32)
+            // MARK: - Item name
+            TextField("", text: $itemTitle, axis: .horizontal)
+                .focused($focusedField, equals: .itemTitle(id: item.id))
+                .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 16))
+                .foregroundColor(Color(item.isChecked
+                                       ? ColorKeys.accentText.rawValue
+                                       : ColorKeys.defaultText.rawValue))
+                .lineLimit(3)
+                .frame(minWidth: 40)
+                .strikethrough(item.isChecked)
+                .gesture(TapGesture().onEnded { _ in
+                    /// This TapGesture is needed for selecting the TextField
+                })
+                .onChange(of: itemTitle) { newValue in
+                    didChangeItemName(newValue)
                 }
-                .frame(maxWidth: geometry.size.width, maxHeight: .infinity)
-                .fixedSize(horizontal: true, vertical: false)
-            }
+            // TODO: Check deze link voor submit: https://www.reddit.com/r/SwiftUI/comments/zobpfu/how_to_submit_textfield_with_vertical_axis/
+                .onSubmit {
+                    if item.name == "" {
+                        didDeleteItem()
+                    } else if item.quantity == "" {
+                        focusedField = .itemQuantity(id: item.id)
+                    } else {
+                        doCreateNewItem()
+                    }
+                }
             
-            // MARK: - Item priority
-            Group {
-                switch item.priority {
-                    case 1:
-                        Circle()
-                            .foregroundColor(.green)
-                            .frame(width: 14)
-                    case 2:
-                        Circle()
-                            .foregroundColor(.orange)
-                            .frame(width: 14)
-                    case 3:
-                        Circle()
-                            .foregroundColor(.red)
-                            .frame(width: 14)
-                    default:
-                        Circle()
-                            .foregroundColor(.gray.opacity(0.2))
-                            .frame(width: 14)
+            // MARK: - Item quantity
+            TextField("", text: $itemQuantity)
+                .focused($focusedField, equals: .itemQuantity(id: item.id))
+                .font(.custom(FontKeys.Quicksand.regular.rawValue, size: 16))
+                .foregroundColor(Color(ColorKeys.accentText.rawValue))
+                .frame(width: 64)
+                .gesture(TapGesture().onEnded { _ in
+                    /// This TapGesture is needed for selecting the TextField
+                })
+                .onChange(of: itemQuantity) { newValue in
+                    didChangeItemQuantity(newValue)
                 }
-            }
-            .onTapGesture {
-                didChangeItemPriority()
-            }
+                .onSubmit {
+                    if item.section.getAllItems().last?.itemIndex == item.itemIndex {
+                        doCreateNewItem()
+                    } else {
+                        // TODO: select next item
+                        focusedField = nil
+                    }
+                }
         }
-        .padding(.horizontal, 30)
+        .padding(.horizontal, 20)
         .padding(.vertical, 6)
         .background(Color(ColorKeys.defaultBackground.rawValue))
         .contentShape(Rectangle())
-        .modifier(SwipeableView(callback: {
+        .modifier(SwipeableView  {
             didDeleteItem()
-        }))
+        })
     }
 }
 
@@ -137,19 +122,29 @@ struct ItemRow_Previews: PreviewProvider {
             
             ItemRow(item: ItemEntity.shortExampleItem) { newValue in
 
-            } didChangeItemPriority: {
-
             } didChangeItemQuantity: { newQuantity in
 
             } toggleItemIsChecked: {
 
             } didDeleteItem: {
+                
+            } doCreateNewItem: {
                 
             }
 
             ItemRow(item: ItemEntity.mediumExampleItem) { newValue in
 
-            } didChangeItemPriority: {
+            } didChangeItemQuantity: { newQuantity in
+
+            } toggleItemIsChecked: {
+
+            } didDeleteItem: {
+                
+            } doCreateNewItem: {
+                
+            }
+
+            ItemRow(item: ItemEntity.longExampleItem) { newValue in
 
             } didChangeItemQuantity: { newQuantity in
 
@@ -157,17 +152,7 @@ struct ItemRow_Previews: PreviewProvider {
 
             } didDeleteItem: {
                 
-            }
-
-            ItemRow(item: ItemEntity.longExampleItem) { newValue in
-
-            } didChangeItemPriority: {
-
-            } didChangeItemQuantity: { newQuantity in
-
-            } toggleItemIsChecked: {
-
-            } didDeleteItem: {
+            } doCreateNewItem: {
                 
             }
         }

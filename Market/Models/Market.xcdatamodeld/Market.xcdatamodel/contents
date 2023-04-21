@@ -3,10 +3,9 @@
     <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES">
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isChecked" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="itemIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
-        <attribute name="note" optional="YES" attributeType="String"/>
-        <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="quantity" attributeType="String"/>
         <relationship name="section" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SectionEntity" inverseName="items" inverseEntity="SectionEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -15,9 +14,10 @@
         </uniquenessConstraints>
     </entity>
     <entity name="SectionEntity" representedClassName="SectionEntity" syncable="YES">
-        <attribute name="iconName" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isCollapsed" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
+        <attribute name="sectionIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemEntity" inverseName="section" inverseEntity="ItemEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

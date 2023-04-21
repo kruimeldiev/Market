@@ -12,74 +12,120 @@ struct ListOverviewView: View {
     
     @StateObject var viewModel: ListOverviewViewModel
     
-    @FocusState var focussedField: FocusField?
+    @FocusState var focusedField: FocusableField?
     
     var body: some View {
         NavigationStack {
             ZStack {
+                
+                Color(ColorKeys.defaultBackground.rawValue)
+                    .onTapGesture {
+                        /// Tappable only when the ScrollView is empty
+                        if viewModel.focusedField == nil { Task { await viewModel.addNewSection() } }
+                    }
+                
                 ScrollView {
                     // MARK: - Section
                     ForEach(viewModel.sections, id: \.self) { section in
-                        VStack {
-                            SectionHeader(section: section) { newValue in
-                                viewModel.updateSectionTitle(newValue: newValue, sectionId: section.id)
-                            } toggleSectionIsCollapsed: {
-                                // TODO: Add collapse feature
-                            } deleteSection: {
-                                viewModel.deleteSectionEntity(id: section.id)
-                            } addNewItemToSection: {
-                                viewModel.addNewItemToSection(section.id)
-                            }
-                            .focused($focussedField, equals: .sectionTitleField(id: section.id.uuidString))
+                        ZStack {
                             
-                            // MARK: - Item in section
-                            LazyVStack(spacing: 2) {
-                                ForEach(section.getAllItems(), id: \.self) { item in
-                                    ItemRow(item: item) { newValue in
-                                        viewModel.updateItemName(newValue: newValue, itemId: item.id)
-                                    } didChangeItemPriority: {
-                                        viewModel.changeItemPriority(item.id)
-                                    } didChangeItemQuantity: { newQuantity in
-                                        viewModel.updateItemQuantity(newValue: newQuantity, itemId: item.id)
-                                    } toggleItemIsChecked: {
-                                        viewModel.checkItemEntity(item.id)
-                                    } didDeleteItem: {
-                                        viewModel.deleteItem(item.id)
+                            Color(ColorKeys.defaultBackground.rawValue)
+                                .onTapGesture {
+                                    /// Tappable space between sections
+                                    if viewModel.focusedField == nil {
+                                        Task {
+                                            await viewModel.addNewItemToSection(section.id)
+                                        }
+                                    } else {
+                                        viewModel.focusedField = nil
                                     }
-                                    .focused($focussedField, equals: .itemTitleField(id: item.id.uuidString))
-                                    
-                                    // TODO: Remove bottom divider?
-                                    Divider()
-                                        .padding(.horizontal, 20)
+                                }
+                            
+                            VStack {
+                                
+                                SectionHeader(section: section) { newValue in
+                                    Task {
+                                        await viewModel.updateSectionTitle(newValue: newValue, sectionId: section.id)
+                                    }
+                                } toggleSectionIsCollapsed: {
+                                    Task {
+                                        await viewModel.toggleSelectionCollapseState(id: section.id)
+                                    }
+                                } deleteSection: {
+                                    Task {
+                                        await viewModel.deleteSectionEntity(id: section.id)
+                                    }
+                                } addNewItemToSection: {
+                                    Task {
+                                        await viewModel.addNewItemToSection(section.id)
+                                    }
+                                }
+                                .focused($focusedField, equals: .sectionTitle(id: section.id))
+                                
+                                // MARK: - Item in section
+                                if !section.isCollapsed {
+                                    LazyVStack(spacing: 2) {
+                                        ForEach(section.getAllItems(), id: \.self) { item in
+                                            ItemRow(item: item) { newValue in
+                                                Task {
+                                                    await viewModel.updateItemName(newValue: newValue, itemId: item.id)
+                                                }
+                                            } didChangeItemQuantity: { newQuantity in
+                                                Task {
+                                                    await viewModel.updateItemQuantity(newValue: newQuantity, itemId: item.id)
+                                                }
+                                            } toggleItemIsChecked: {
+                                                Task {
+                                                    await viewModel.checkItemEntity(item.id)
+                                                }
+                                            } didDeleteItem: {
+                                                Task {
+                                                    await viewModel.deleteItem(item.id)
+                                                }
+                                            } doCreateNewItem: {
+                                                Task {
+                                                    await viewModel.addNewItemToSection(section.id)
+                                                }
+                                            }
+                                            .focused($focusedField, equals: .itemTitle(id: item.id))
+//                                            .focused($focusedField, equals: .itemQuantity(id: item.id))
+                                            
+                                            Divider()
+                                                .padding(.horizontal, 20)
+                                        }
+                                    }
                                 }
                             }
-                            .padding(.top, -8)
-                            .padding(.bottom, 20)
-                        }
-                        .onTapGesture {
-                            viewModel.addNewItemToSection(section.id)
+                            .padding(.bottom, 40)
                         }
                     }
+                    Spacer(minLength: focusedField == nil ? 80 : 20)
                 }
                 .onTapGesture {
-                    if focussedField != nil {
-                        focussedField = nil
+                    if viewModel.focusedField == nil {
+                        Task {
+                            await viewModel.addNewSection()
+                        }
+                    } else {
+                        viewModel.focusedField = nil
                     }
                 }
                 
                 // MARK: - Plus button
-                if focussedField == nil {
+                if viewModel.focusedField == nil {
                     VStack {
                         Spacer()
                         Button {
-                            viewModel.addNewSection()
+                            Task {
+                                await viewModel.addNewSection()
+                            }
                         } label: {
                             Text("")
                                 .modifier(AppPrimaryButton(width: 60,
                                                            height: 60,
                                                            backgroundColor: Color(ColorKeys.defaultAccent.rawValue),
                                                            iconName: "plus"))
-                                .shadow(color: Color(ColorKeys.defaultAccentSoft.rawValue).opacity(0.6),
+                                .shadow(color: Color(ColorKeys.defaultAccentSoft.rawValue).opacity(0.4),
                                         radius: 20)
                         }
                         .padding(40)
@@ -90,17 +136,20 @@ struct ListOverviewView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         // TODO: Add clear all button
+                        // TODO: Add func to change navigationTitle
                         print("Todo: Add clear all button")
                     } label: {
                         Image(systemName: "info.circle")
                             .font(.headline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color(ColorKeys.defaultText.rawValue))
                     }
                 }
             }
-            .navigationTitle("Groceries")
+            .navigationTitle("")
+            .padding(.top, 20)
         }
-        .onChange(of: viewModel.listOverviewFocusState) { focussedField = $0 }
+//        .onChange(of: focusedField) { viewModel.focusedField = $0 }
+        .onChange(of: viewModel.focusedField) { focusedField = $0 }
     }
 }
 

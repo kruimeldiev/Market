@@ -11,16 +11,15 @@ import Combine
 
 class ListOverviewViewModel: ObservableObject {
     
-    @Injected(Container.itemEntityProvider) private var itemsProvider: ItemEntityProviderProtocol
-    @Injected(Container.sectionEntityProviderProvider) private var sectionsProvider: SectionEntityProviderProtocol
+    @Injected(Container.itemEntityProvider) private var itemsProvider: EntityProvider<ItemEntity>
+    @Injected(Container.sectionEntityProvider) private var sectionsProvider: EntityProvider<SectionEntity>
     
-    private var sectionsCancellable: AnyCancellable? = nil
-    private var itemsCancellable: AnyCancellable? = nil
+    private var cancellebles = Set<AnyCancellable>()
     
     @Published var items = [ItemEntity]()
     @Published var sections = [SectionEntity]()
     
-    @Published var listOverviewFocusState: FocusField?
+    @Published var focusedField: FocusableField?
     
     init() {
         subscribeToItemsProvider()
@@ -28,8 +27,8 @@ class ListOverviewViewModel: ObservableObject {
     }
     
     private func subscribeToSectionsProvider() {
-        sectionsCancellable = sectionsProvider.sectionsPublisher
-            .sink(receiveCompletion: { completion in
+        sectionsProvider.publisher
+            .sink { completion in
                 switch completion {
                     case .finished:
                         break
@@ -37,15 +36,15 @@ class ListOverviewViewModel: ObservableObject {
                         // TODO: Error handling
                         print(error)
                 }
-            }, receiveValue: { [weak self] sections in
-                self?.sections = sections
-            })
+            } receiveValue: { [weak self] sections in
+                self?.sections = sections.sorted { $0.sectionIndex < $1.sectionIndex }
+            }
+            .store(in: &cancellebles)
     }
     
-    /// Subscribes to the ItemsProvider with a weak reference
     private func subscribeToItemsProvider() {
-        itemsCancellable = itemsProvider.itemsPublisher
-            .sink(receiveCompletion: { completion in
+        itemsProvider.publisher
+            .sink { completion in
                 switch completion {
                     case .finished:
                         break
@@ -53,120 +52,139 @@ class ListOverviewViewModel: ObservableObject {
                         // TODO: Error handling
                         print(error)
                 }
-            }, receiveValue: { [weak self] items in
+            } receiveValue: { [weak self] items in
+                // TODO: Sort by index
                 self?.items = items
-            })
+            }
+            .store(in: &cancellebles)
     }
     
     // MARK: - SectionEntity Fucntions
-    func addNewSection() {
-        // TODO: Remove image name. also from CoreData
-        let result = sectionsProvider.createSectionEntity(title: "", imageName: "")
-        switch result {
-            case .success(let id):
-                listOverviewFocusState = .sectionTitleField(id: id)
-            case .failure(let error):
-                // TODO: Error handling
-                print(error)
+    func addNewSection() async {
+        do {
+            let newSection = try await sectionsProvider.create { section in
+                section.id = UUID()
+                section.name = ""
+                section.isCollapsed = false
+                section.sectionIndex = Int16(self.sections.count + 1)
+            }
+            await MainActor.run(body: {
+                self.focusedField = .sectionTitle(id: newSection.id)
+            })
+        } catch {
+            // TODO: Error handling
+            print(error)
         }
     }
     
-    func updateSectionTitle(newValue: String, sectionId: UUID) {
+    func updateSectionTitle(newValue: String, sectionId: UUID) async {
         guard let section = sections.first(where: { $0.id == sectionId }) else { return }
         section.name = newValue
-        let result = sectionsProvider.updateSectionEntity(section)
-        switch result {
-            case .success:
-                break
-            case .failure(let error):
-                // TODO: Error handling
-                print(error)
+        
+        do {
+            try await sectionsProvider.update(entity: section)
+        } catch {
+            // TODO: Error handling
+            print(error)
         }
     }
     
-    func deleteSectionEntity(id: UUID) {
+    func deleteSectionEntity(id: UUID) async {
         guard let section = sections.first(where: { $0.id == id }) else { return }
-        let result = sectionsProvider.deleteSectionEntity(section)
-        switch result {
-            case .success:
-                break
-            case .failure(let error):
-                // TODO: Error handling
-                print(error)
+        
+        do {
+            try await sectionsProvider.delete(entity: section)
+        } catch {
+            // TODO: Error handling
+            print(error)
         }
     }
     
-    func addNewItemToSection(_ sectionId: UUID) {
-        guard let section = sections.first(where: { $0.id == sectionId }) else { return }
-        let result = sectionsProvider.addItemToSection(section)
-        switch result {
-            case .success(let id):
-                listOverviewFocusState = .itemTitleField(id: id)
-            case .failure(let error):
-                // TODO: Error handling
-                print(error)
+    func toggleSelectionCollapseState(id: UUID) async {
+        guard let section = sections.first(where: { $0.id == id }) else { return }
+        section.isCollapsed.toggle()
+        
+        do {
+            try await sectionsProvider.update(entity: section)
+        } catch {
+            // TODO: Error handling
+            print(error)
         }
     }
     
     // MARK: - ItemEntity Functions
-    func updateItemName(newValue: String, itemId: UUID) {
+    func addNewItemToSection(_ sectionId: UUID) async {
+        guard let section = sections.first(where: { $0.id == sectionId }) else { return }
+        do {
+            let newItem = try await itemsProvider.create { item in
+                item.id = UUID()
+                item.name = ""
+                item.section = section
+                item.quantity = ""
+                item.itemIndex = Int16(section.getAllItems().count + 1)
+            }
+            await MainActor.run(body: {
+                self.focusedField = .itemTitle(id: newItem.id)
+            })
+        } catch {
+            // TODO: Error handling
+            print(error)
+        }
+    }
+    
+    func updateItemName(newValue: String, itemId: UUID) async {
         guard let item = items.first(where: { $0.id == itemId }) else { return }
         item.name = newValue
-        let result = itemsProvider.updateItemEntity()
-        switch result {
-            case .success:
-                break
-            case .failure(let error):
-                // TODO: Error handling
-                print(error)
+        do {
+            try await itemsProvider.update(entity: item)
+        } catch {
+            // TODO: Error handling
+            print(error)
         }
     }
     
-    func updateItemQuantity(newValue: Int, itemId: UUID) {
+    func updateItemQuantity(newValue: String, itemId: UUID) async {
         guard let item = items.first(where: { $0.id == itemId }) else { return }
-        item.quantity = Int16(newValue)
-        let result = itemsProvider.updateItemEntity()
-        switch result {
-            case .success:
-                break
-            case .failure(let error):
-                // TODO: Error handling
-                print(error)
+        item.quantity = newValue
+        do {
+            try await itemsProvider.update(entity: item)
+        } catch {
+            // TODO: Error handling
+            print(error)
         }
     }
     
-    func deleteItem(_ itemId: UUID) {
-        guard let item = items.first(where: { $0.id == itemId }) else { return }
-        let result = itemsProvider.deleteItemEntity(item)
-        switch result {
-            case .success:
-                break
-            case .failure(let error):
-                print(error)
-        }
-    }
-    
-    func checkItemEntity(_ itemId: UUID) {
+    func checkItemEntity(_ itemId: UUID) async {
         guard let item = items.first(where: { $0.id == itemId }) else { return }
         item.isChecked.toggle()
-        let result = itemsProvider.updateItemEntity()
-        switch result {
-            case .success:
-                break
-            case .failure(let error):
-                print(error)
+        do {
+            try await itemsProvider.update(entity: item)
+        } catch {
+            // TODO: Error handling
+            print(error)
         }
     }
     
-    func changeItemPriority(_ itemId: UUID) {
+    func deleteItem(_ itemId: UUID) async {
         guard let item = items.first(where: { $0.id == itemId }) else { return }
-        item.priority = (item.priority >= 0 && item.priority <= 2) ? item.priority + 1 : 0
-        let result = itemsProvider.updateItemEntity()
-        switch result {
-            case .success:
-                break
-            case .failure(let error):
-                print(error)
+        do {
+            try await itemsProvider.delete(entity: item)
+        } catch {
+            // TODO: Error handling
+            print(error)
         }
     }
+    
+    // MARK: - Miscelanious
+    
+    // TODO: Needed?
+//    func deleteEmptyItemsIfNeeded() async {
+//        let emptyItems = items.filter { item in
+//            item.name.isEmpty && item.quantity.isEmpty
+//        }
+//        for item in emptyItems {
+//            await deleteItem(item.id)
+//        }
+//        listOverviewFocusState = nil
+//    }
 }

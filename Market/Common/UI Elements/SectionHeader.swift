@@ -17,6 +17,8 @@ struct SectionHeader: View {
     
     @State var sectionTitle: String
     
+    @FocusState var focusedField: FocusableField?
+    
     init(section: SectionEntity,
          didChangeSectionName: @escaping (String) -> Void,
          toggleSectionIsCollapsed: @escaping () -> Void,
@@ -34,10 +36,14 @@ struct SectionHeader: View {
         VStack {
             HStack {
                 TextField("", text: $sectionTitle)
+                    .focused($focusedField, equals: .sectionTitle(id: section.id))
+                    .keyboardType(.default)
                     .font(.custom(FontKeys.Quicksand.medium.rawValue, size: 14))
                     .foregroundColor(Color(ColorKeys.accentText.rawValue))
                     .lineLimit(1)
-                    .gesture(TapGesture().onEnded { _ in })
+                    .gesture(TapGesture().onEnded { _ in
+                        /// This TapGesture is needed for selecting the TextField
+                    })
                     .onChange(of: sectionTitle) { newValue in
                         didChangeSectionName(newValue)
                     }
@@ -45,16 +51,37 @@ struct SectionHeader: View {
                         addNewItemToSection()
                     }
                 
-                if section.name != "" {
+                HStack(spacing: 20) {
+                    Button {
+                        toggleSectionIsCollapsed()
+                    } label: {
+                        Image(systemName: section.isCollapsed ? "chevron.up" : "chevron.down")
+                            .foregroundColor(Color(ColorKeys.defaultText.rawValue))
+                    }
                     Button {
                         deleteSection()
                     } label: {
-                        Image(systemName: "info")
-                            .foregroundColor(.gray)
+                        Image(systemName: "trash")
+                            .foregroundColor(Color(ColorKeys.defaultText.rawValue))
+                    }
+                    Button {
+                        addNewItemToSection()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .foregroundColor(Color(ColorKeys.defaultAccent.rawValue))
                     }
                 }
             }
-            .padding(.horizontal, 30)
+            .padding(.horizontal, 20)
+            
+            if section.getAllItems().isEmpty {
+                Rectangle()
+                    .foregroundColor(Color(ColorKeys.defaultBackground.rawValue))
+                    .frame(height: 60)
+                    .onTapGesture {
+                        addNewItemToSection()
+                    }
+            }
         }
         .padding(.vertical, 4)
     }
@@ -63,16 +90,37 @@ struct SectionHeader: View {
 struct SectionHeader_Previews: PreviewProvider {
     
     static var previews: some View {
-        ScrollView {
-            SectionHeader(section: SectionEntity.mediumExampleSection) { newValue in
-                
-            } toggleSectionIsCollapsed: {
-                
-            } deleteSection: {
-                
-            } addNewItemToSection: {
-                
-            }
+        VStack {
+            
         }
+//        ScrollView {
+//            SectionHeader(section: SectionEntity.mediumExampleSection) { newValue in
+//
+//            } toggleSectionIsCollapsed: {
+//
+//            } deleteSection: {
+//
+//            } addNewItemToSection: {
+//
+//            }
+//            SectionHeader(section: SectionEntity.mediumExampleSection) { newValue in
+//
+//            } toggleSectionIsCollapsed: {
+//
+//            } deleteSection: {
+//
+//            } addNewItemToSection: {
+//
+//            }
+//            SectionHeader(section: SectionEntity.mediumExampleSection) { newValue in
+//
+//            } toggleSectionIsCollapsed: {
+//
+//            } deleteSection: {
+//
+//            } addNewItemToSection: {
+//
+//            }
+//        }
     }
 }

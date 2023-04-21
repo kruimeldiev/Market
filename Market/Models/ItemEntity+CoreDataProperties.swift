@@ -2,7 +2,7 @@
 //  ItemEntity+CoreDataProperties.swift
 //  Market
 //
-//  Created by Casper on 24/02/2023.
+//  Created by Casper on 26/03/2023.
 //
 //
 
@@ -19,10 +19,9 @@ extension ItemEntity {
     @NSManaged public var id: UUID
     @NSManaged public var isChecked: Bool
     @NSManaged public var name: String
-    @NSManaged public var note: String?
-    @NSManaged public var priority: Int16
-    @NSManaged public var quantity: Int16
-    @NSManaged public var section: SectionEntity?
+    @NSManaged public var quantity: String
+    @NSManaged public var section: SectionEntity
+    @NSManaged public var itemIndex: Int16
 
 }
 

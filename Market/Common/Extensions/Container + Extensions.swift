@@ -16,8 +16,8 @@ extension Container {
     
     static func setupPreviews() {
         coreDataManager.register { CoreDataManager(inMemory: true) }
-        itemEntityProvider.register { ItemEntityProvider(preview: true) }
-        sectionEntityProviderProvider.register { SectionEntityProvider(preview: true) }
+        itemEntityProvider.register { EntityProvider(fetchRequest: ItemEntity.fetchRequest(), preview: true) }
+        sectionEntityProvider.register { EntityProvider(fetchRequest: SectionEntity.fetchRequest(), preview: true) }
     }
     
     // MARK: - Core data
@@ -25,11 +25,12 @@ extension Container {
         CoreDataManager() as CoreDataManagerProtocol
     }
     
-    static let sectionEntityProviderProvider = Factory(scope: .shared) {
-        SectionEntityProvider() as SectionEntityProviderProtocol
+    // TODO: DOCS
+    static let sectionEntityProvider = Factory(scope: .shared) {
+        EntityProvider(fetchRequest: SectionEntity.fetchRequest())
     }
     
     static let itemEntityProvider = Factory(scope: .shared) {
-        ItemEntityProvider() as ItemEntityProviderProtocol
+        EntityProvider(fetchRequest: ItemEntity.fetchRequest())
     }
 }

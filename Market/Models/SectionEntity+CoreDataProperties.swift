@@ -2,7 +2,7 @@
 //  SectionEntity+CoreDataProperties.swift
 //  Market
 //
-//  Created by Casper on 24/02/2023.
+//  Created by Casper on 26/03/2023.
 //
 //
 
@@ -16,11 +16,12 @@ extension SectionEntity {
         return NSFetchRequest<SectionEntity>(entityName: "SectionEntity")
     }
 
-    @NSManaged public var iconName: String?
     @NSManaged public var id: UUID
     @NSManaged public var name: String
+    @NSManaged public var isCollapsed: Bool
     @NSManaged public var items: NSSet?
-
+    @NSManaged public var sectionIndex: Int16
+    
 }
 
 // MARK: Generated accessors for items
